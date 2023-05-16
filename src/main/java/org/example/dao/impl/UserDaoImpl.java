@@ -21,12 +21,22 @@ public class UserDaoImpl implements UserDao {
     }
 
     @Override
-    public int check(int id, String password) throws Exception {
+    public int check(String name, String password) throws Exception {
+        int num;
         String sql = "select * from user where id = ? and passworld = ?";
         PstmtUtil pstmtUtil = new PstmtUtil();
         PreparedStatement pre = pstmtUtil.PstmtUtil(sql);
-        pstmtUtil.closeConnection();
-        return 0;
+        pre.setString(1,name);
+        pre.setString(2,password);
+        ResultSet resultSet = pre.executeQuery(sql);
+        if (resultSet.next()){
+            num = resultSet.getInt(3);
+            pstmtUtil.closeConnection();
+            return num;
+        }else {
+            pstmtUtil.closeConnection();
+            return 0;
+        }
     }
 
 
