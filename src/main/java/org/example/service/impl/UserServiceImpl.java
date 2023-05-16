@@ -1,5 +1,6 @@
 package org.example.service.impl;
 
+import org.example.dao.impl.UserDaoImpl;
 import org.example.service.UserService;
 
 /**
@@ -10,8 +11,21 @@ import org.example.service.UserService;
 
 public class UserServiceImpl implements UserService {
     @Override
-    public boolean login(String name, String password) {
-        return false;
+    //登录方法  true则登录成功，反之失败
+    public boolean login(String name, String password){
+        boolean flag = false;
+        UserDaoImpl userDao = new UserDaoImpl();
+        try {
+            int num = userDao.check(name,password);//检查登录是否成功并传递identity
+            if (num == 0){//管理员登录
+                flag = true;
+            }else if (num == 1 || num == 2){//用户登录
+                flag = true;
+            }
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+        return flag;
     }
 
     @Override
