@@ -14,7 +14,7 @@ import lombok.*;
 @Getter
 public class Goods {
     private String name;
-    private Integer category;
+    private String category;
     private Double price;
     private Double discount;
     private Double portprice;
