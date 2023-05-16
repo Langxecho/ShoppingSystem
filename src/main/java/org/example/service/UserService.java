@@ -12,4 +12,5 @@ public interface UserService {
     boolean cleanFavourites();//购物车内容购买
 
 
+
 }
