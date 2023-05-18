@@ -76,6 +76,11 @@ public class UserDaoImpl implements UserDao {
     }
 
     @Override
+    public int check(int id, String password) throws Exception {
+        return 0;
+    }
+
+    @Override
     public boolean changeBuy(double[] buy,int goodid,String name) throws Exception{
         boolean flag = true;
         String sql1 = "update goods set store = "+(int)buy[0]+" where id = "+goodid+"";
