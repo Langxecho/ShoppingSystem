@@ -93,7 +93,9 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public boolean changeName(String name) {
+    public boolean changeName(String oldName,String newName) throws Exception{
+        UserDaoImpl userDao = new UserDaoImpl();
+        userDao.changeName(oldName,newName);
         return false;
     }
 

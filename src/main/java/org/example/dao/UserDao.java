@@ -11,5 +11,5 @@ public interface UserDao {
     int check(String name,String password) throws Exception;
     boolean check(String name) throws Exception;
     double[] checkBuy(int goodid,String name,int num) throws Exception;
-
+    boolean changeName(String oldName,String newName) throws Exception;
 }

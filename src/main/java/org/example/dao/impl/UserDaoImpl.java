@@ -44,6 +44,19 @@ public class UserDaoImpl implements UserDao {
     }
 
     @Override
+    public boolean changeName(String oldName,String newName) throws Exception{
+        boolean flag = false;
+        String sql = "update user set username = ? where username = ?";
+        PstmtUtil pstmtUtil = new PstmtUtil();
+        PreparedStatement pre = pstmtUtil.PstmtUtil(sql);
+        pre.setString(1,newName);
+        pre.setString(2,oldName);
+        pre.executeUpdate();
+        flag = true;
+        pstmtUtil.closeConnection();
+        return flag;
+    }
+    @Override
     public int check(String name, String password) throws Exception {
         int num;
         String sql = "select * from user where username = ? and passworld = ?";
