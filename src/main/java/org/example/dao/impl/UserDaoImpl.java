@@ -33,6 +33,17 @@ public class UserDaoImpl implements UserDao {
     }
 
     @Override
+    public boolean changeBalance(String username, double money) throws SQLException {
+        money = checkBalance(username);
+        String sql = "update user set balance = "+money+" where username = '"+username+"'";
+        PstmtUtil pstmtUtil = new PstmtUtil();
+        PreparedStatement pre = pstmtUtil.PstmtUtil(sql);
+        System.out.println("充值成功");
+        pstmtUtil.closeConnection();
+        return false;
+    }
+
+    @Override
     public int check(int id, String password) throws Exception {
         return 0;
     }
@@ -71,6 +82,22 @@ public class UserDaoImpl implements UserDao {
         }
         pstmtUtil.closeConnection();
         return bl;
+    }
+
+    @Override
+    //获取余额
+    public double checkBalance(String username) throws SQLException {
+        double money = 0;
+        String sql = "select * from user where username = ?";
+        PstmtUtil pstmtUtil = new PstmtUtil();
+        PreparedStatement pre = pstmtUtil.PstmtUtil(sql);
+        pre.setString(1, username);
+        ResultSet resultSet = pre.executeQuery();
+        if (resultSet.next()) {
+            money = resultSet.getDouble(2);
+        }
+        pstmtUtil.closeConnection();
+        return money;
     }
 
 

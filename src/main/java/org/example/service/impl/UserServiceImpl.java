@@ -3,6 +3,7 @@ package org.example.service.impl;
 import org.example.dao.impl.UserDaoImpl;
 import org.example.service.UserService;
 
+import java.sql.SQLException;
 import java.util.Objects;
 import java.util.Random;
 
@@ -35,9 +36,9 @@ public class UserServiceImpl implements UserService {
     //用户注册 返回true成功，返回false失败
     public boolean registe(String name, String password, String password2) throws Exception {
         Random rdm = new Random();
-        int num = rdm.nextInt(899999) + 100000;
+        int num = rdm.nextInt(899999) + 100000;//随机生成6位ID
         UserDaoImpl userDaoImpl = new UserDaoImpl();
-        boolean bl = userDaoImpl.check(name);
+        boolean bl = userDaoImpl.check(name);//判断用户名是否注册
         boolean bl2 = true;
         if (bl) {
             System.out.println("用户名已存在");
@@ -65,8 +66,11 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public boolean topUp() {
-        return false;
+    //余额充值
+    public boolean topUp(String username, int money) throws SQLException {
+        UserDaoImpl userDaoImpl = new UserDaoImpl();
+        userDaoImpl.changeBalance(username, money);
+        return true;
     }
 
     @Override
