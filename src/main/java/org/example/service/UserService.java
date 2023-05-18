@@ -9,8 +9,8 @@ public interface UserService {
     boolean getVip(String username) throws SQLException;//购买vip
     boolean topUp(String username, double money) throws SQLException;//余额充值
     boolean changeName(String oldName,String newName) throws Exception;//修改用户名
-    boolean review(String text);//添加评论
-    boolean addFavourites(String goodid,String number);//添加购物车
+    boolean review(String text,int userid,int goodid) throws Exception;//添加评论
+    boolean addFavourites(int goodid,int number,int userid)throws Exception;//添加购物车
     boolean cleanFavourites();//购物车内容购买
 
 

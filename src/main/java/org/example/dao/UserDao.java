@@ -7,10 +7,12 @@ import java.sql.SQLException;
 public interface UserDao {
     int insert(User user) throws SQLException;
     boolean insert(int id, String name, String password) throws SQLException;
-    boolean changeBuy(double[] buy,int goodid,String name) throws Exception;
+    boolean insertReview(String text,int userid,int goodid) throws Exception;
+    boolean insertFavourites(int goodid, int number,int userid) throws Exception;
+    boolean changeBuy(double[] buy,int goodid,String name) throws Exception;//修改数据库数据（数目和金额）
     int check(String name,String password) throws Exception;
     boolean check(String name) throws Exception;
-    double[] checkBuy(int goodid,String name,int num) throws Exception;
+    double[] checkBuy(int goodid,String name,int num) throws Exception;//判断商品剩余数目和剩余金额并返回
     boolean changeName(String oldName,String newName) throws Exception;
     boolean changeBalance(String username, double money) throws SQLException;//充值余额
     boolean changeBalance2(String username) throws SQLException;//开通Vip扣除余额
