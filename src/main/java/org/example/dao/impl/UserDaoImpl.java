@@ -21,12 +21,57 @@ public class UserDaoImpl implements UserDao {
     }
 
     @Override
-    public boolean insert(int id, String name, String password) {
-        String sql = "insert into user values('"+id+"', 0, 1, '"+name+"', '"+password+"')";
+    //新用户注册时将信息导入数据库
+    public boolean insert(int id, String name, String password) throws SQLException {
+        String sql = "insert into user(id, balance, identity, username, passworld) values ("+id+", 0, 1, '"+name+"', '"+password+"')";
         PstmtUtil pstmtUtil = new PstmtUtil();
         PreparedStatement pre = pstmtUtil.PstmtUtil(sql);
+        pre.executeUpdate(sql);
         pstmtUtil.closeConnection();
         return false;
+    }
+
+    @Override
+    //充值余额
+    public boolean changeBalance(String username, double money) throws SQLException {
+        double balance = checkBalance(username) + money;
+        String sql = "update user set balance = "+balance+" where username = '"+username+"'";
+        PstmtUtil pstmtUtil = new PstmtUtil();
+        PreparedStatement pre = pstmtUtil.PstmtUtil(sql);
+        pre.executeUpdate(sql);
+        System.out.println("充值成功");
+        pstmtUtil.closeConnection();
+        return false;
+    }
+
+    @Override
+    //开通Vip扣除余额
+    public boolean changeBalance2(String username) throws SQLException {
+        double money = checkBalance(username);
+        double balance = money - 648;
+        String sql = "update user set balance = "+balance+" where username = '"+username+"'";
+        PstmtUtil pstmtUtil = new PstmtUtil();
+        PreparedStatement pre = pstmtUtil.PstmtUtil(sql);
+        pre.executeQuery(sql);
+        pstmtUtil.closeConnection();
+        return false;
+    }
+
+    @Override
+    //开通Vip
+    public boolean changeVip(String username) throws SQLException {
+        double money = checkBalance(username);
+        boolean bl = true;
+        if (money >= 648) {
+        String sql = "update user set identity = 2 where username = '"+username+"'";
+        PstmtUtil pstmtUtil = new PstmtUtil();
+        PreparedStatement pre = pstmtUtil.PstmtUtil(sql);
+        pre.executeUpdate(sql);
+        pstmtUtil.closeConnection();
+        } else {
+            bl = false;
+        }
+        return bl;
     }
 
     @Override
@@ -75,8 +120,9 @@ public class UserDaoImpl implements UserDao {
         }
     }
 
+
     @Override
-    //用户注册查询用户名
+    //用户注册查询用户名是否存在
     public boolean check(String name) throws Exception {
         String sql = "select username from user where username = ?";
         boolean bl = false;
@@ -124,4 +170,19 @@ public class UserDaoImpl implements UserDao {
 
 
 
+    @Override
+    //获取余额
+    public double checkBalance(String username) throws SQLException {
+        double money = 0;
+        String sql = "select * from user where username = ?";
+        PstmtUtil pstmtUtil = new PstmtUtil();
+        PreparedStatement pre = pstmtUtil.PstmtUtil(sql);
+        pre.setString(1, username);
+        ResultSet resultSet = pre.executeQuery();
+        if (resultSet.next()) {
+            money = resultSet.getDouble(2);
+        }
+        pstmtUtil.closeConnection();
+        return money;
+    }
 }

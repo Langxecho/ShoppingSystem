@@ -12,4 +12,9 @@ public interface UserDao {
     boolean check(String name) throws Exception;
     double[] checkBuy(int goodid,String name,int num) throws Exception;
     boolean changeName(String oldName,String newName) throws Exception;
+    boolean changeBalance(String username, double money) throws SQLException;//充值余额
+    boolean changeBalance2(String username) throws SQLException;//开通Vip扣除余额
+    boolean changeVip(String username) throws SQLException;//开通Vip
+    int check(int id,String password) throws Exception;
+    double checkBalance(String username) throws SQLException;//获取余额
 }
