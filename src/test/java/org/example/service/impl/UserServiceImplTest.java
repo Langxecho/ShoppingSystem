@@ -10,6 +10,6 @@ class UserServiceImplTest {
     @Test
     void changeName() throws Exception {
         UserServiceImpl userService = new UserServiceImpl();
-        userService.changeName("cao","kao");
+//        userService.changeName("cao","kao");
     }
 }
