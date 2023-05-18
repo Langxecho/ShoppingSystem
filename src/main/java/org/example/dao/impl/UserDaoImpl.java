@@ -3,7 +3,6 @@ package org.example.dao.impl;
 import cn.hutool.core.date.DateUtil;
 import org.example.dao.UserDao;
 import org.example.domain.User;
-import org.example.util.JdbcUtil;
 import org.example.util.PstmtUtil;
 
 import java.sql.*;
