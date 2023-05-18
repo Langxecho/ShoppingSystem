@@ -28,19 +28,51 @@ public class UserDaoImpl implements UserDao {
         int num = pre.executeUpdate(sql);
         System.out.println("操作了" + num + "条数据");
         pstmtUtil.closeConnection();
-        System.out.println("你好");
         return false;
     }
 
     @Override
+    //充值余额
     public boolean changeBalance(String username, double money) throws SQLException {
-        money = checkBalance(username);
-        String sql = "update user set balance = "+money+" where username = '"+username+"'";
+        double balance = checkBalance(username) + money;
+        String sql = "update user set balance = "+balance+" where username = '"+username+"'";
         PstmtUtil pstmtUtil = new PstmtUtil();
         PreparedStatement pre = pstmtUtil.PstmtUtil(sql);
+        pre.executeUpdate(sql);
         System.out.println("充值成功");
         pstmtUtil.closeConnection();
         return false;
+    }
+
+    @Override
+    //开通Vip扣除余额
+    public boolean changeBalance2(String username) throws SQLException {
+        double money = checkBalance(username);
+        double balance = money - 648;
+        String sql = "update user set balance = "+balance+" where username = '"+username+"'";
+        PstmtUtil pstmtUtil = new PstmtUtil();
+        PreparedStatement pre = pstmtUtil.PstmtUtil(sql);
+        pre.executeUpdate(sql);
+        pstmtUtil.closeConnection();
+        return false;
+    }
+
+    @Override
+    //开通Vip
+    public boolean changeVip(String username) throws SQLException {
+        double money = checkBalance(username);
+        boolean bl = true;
+        if (money >= 648) {
+        String sql = "update user set identity = 2 where username = '"+username+"'";
+        PstmtUtil pstmtUtil = new PstmtUtil();
+        PreparedStatement pre = pstmtUtil.PstmtUtil(sql);
+        pre.executeUpdate(sql);
+        pstmtUtil.closeConnection();
+        changeBalance2(username);
+        } else {
+            bl = false;
+        }
+        return bl;
     }
 
     @Override
@@ -69,7 +101,7 @@ public class UserDaoImpl implements UserDao {
 
 
     @Override
-    //用户注册查询用户名
+    //用户注册查询用户名是否存在
     public boolean check(String name) throws Exception {
         String sql = "select username from user where username = ?";
         boolean bl = false;
@@ -99,6 +131,4 @@ public class UserDaoImpl implements UserDao {
         pstmtUtil.closeConnection();
         return money;
     }
-
-
 }

@@ -39,35 +39,40 @@ public class UserServiceImpl implements UserService {
         int num = rdm.nextInt(899999) + 100000;//随机生成6位ID
         UserDaoImpl userDaoImpl = new UserDaoImpl();
         boolean bl = userDaoImpl.check(name);//判断用户名是否注册
-        boolean bl2 = true;
-        if (bl) {
+        if (bl = true) {
             System.out.println("用户名已存在");
-            bl2 = false;
         } else {
             if (Objects.equals(password, password2)) {
                 userDaoImpl.insert(num, name, password);
                 System.out.println("注册信息导入成功");
             } else {
                 System.out.println("密码不一致");
-                bl2 = false;
             }
         }
-        return bl2;
+        return bl;
     }
 
     @Override
-    public boolean buy(String goodid) {
+    public boolean buy(int goodid, String name, int num) {
         return false;
     }
 
+
     @Override
-    public boolean getVip() {
-        return false;
+    public boolean getVip(String username) throws SQLException {
+        UserDaoImpl userDaoImpl = new UserDaoImpl();
+        boolean bl = userDaoImpl.changeVip(username);
+        if (bl == true) {
+            System.out.println("Vip开通成功");
+        } else {
+            System.out.println("余额不足");
+        }
+        return bl;
     }
 
     @Override
     //余额充值
-    public boolean topUp(String username, int money) throws SQLException {
+    public boolean topUp(String username, double money) throws SQLException {
         UserDaoImpl userDaoImpl = new UserDaoImpl();
         userDaoImpl.changeBalance(username, money);
         return true;
@@ -82,6 +87,8 @@ public class UserServiceImpl implements UserService {
     public boolean review(String text) {
         return false;
     }
+
+
 
     @Override
     public boolean addFavourites(String goodid, String number) {
