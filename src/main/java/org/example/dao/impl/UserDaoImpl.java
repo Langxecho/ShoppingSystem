@@ -31,22 +31,15 @@ public class UserDaoImpl implements UserDao {
 
     @Override
     public boolean changeBuy(double[] buy,int goodid,String name) throws Exception{
-        boolean flag = false;
-        String sql1 = "update goods set store = ? where id = ?";
-        String sql2 = "update user set balance = ? where username = ?";
+        boolean flag = true;
+        String sql1 = "update goods set store = "+(int)buy[0]+" where id = "+goodid+"";
+        String sql2 = "update user set balance = "+buy[1]+" where username = '"+name+"'";
         PstmtUtil pstmtUtil = new PstmtUtil();
         PreparedStatement pre1 = pstmtUtil.PstmtUtil(sql1);
         PreparedStatement pre2 = pstmtUtil.PstmtUtil(sql2);
-        pre1.setInt(1,(int)buy[0]);
-        pre1.setInt(2,goodid);
-        pre2.setDouble(1,buy[1]);
-        pre2.setString(2,name);
-        ResultSet resultSet1 = pre1.executeQuery();
-        ResultSet resultSet2 = pre2.executeQuery();
-        if (resultSet2.next()){
-            flag = true;
-            pstmtUtil.closeConnection();
-        }
+        pre1.executeUpdate();
+        pre2.executeUpdate();
+        pstmtUtil.closeConnection();
         return flag;
     }
 

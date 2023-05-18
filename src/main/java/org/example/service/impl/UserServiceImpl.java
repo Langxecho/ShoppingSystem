@@ -64,7 +64,7 @@ public class UserServiceImpl implements UserService {
             double[] buy = userDao.checkBuy(goodid,name,num);//获取购买后的余额
             if (buy[1] < 0){
                 System.err.println("用户余额不足");
-            }else if (buy[0] < 0){
+            }if (buy[0] < 0){
                 System.err.println("商品数目不足");
             }else {
                 flag = true;
@@ -87,7 +87,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public boolean topUp(String username, int money) throws SQLException {
         UserDaoImpl userDaoImpl = new UserDaoImpl();
-        userDaoImpl.changeBalance(username, money);
+        //userDaoImpl.changeBalance(username, money);
         System.out.println("充值成功");
         return false;
     }
