@@ -52,7 +52,7 @@ public class UserDaoImpl implements UserDao {
         String sql = "update user set balance = "+balance+" where username = '"+username+"'";
         PstmtUtil pstmtUtil = new PstmtUtil();
         PreparedStatement pre = pstmtUtil.PstmtUtil(sql);
-        pre.executeQuery(sql);
+        pre.executeUpdate(sql);
         pstmtUtil.closeConnection();
         return false;
     }
@@ -68,6 +68,7 @@ public class UserDaoImpl implements UserDao {
         PreparedStatement pre = pstmtUtil.PstmtUtil(sql);
         pre.executeUpdate(sql);
         pstmtUtil.closeConnection();
+        changeBalance2(username);
         } else {
             bl = false;
         }
@@ -185,4 +186,6 @@ public class UserDaoImpl implements UserDao {
         pstmtUtil.closeConnection();
         return money;
     }
+
+
 }
