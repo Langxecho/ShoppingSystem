@@ -21,6 +21,15 @@ public class UserDaoImpl implements UserDao {
     }
 
     @Override
+    public boolean insert(int id, String name, String password) {
+        String sql = "insert into user values('"+id+"', 0, 1, '"+name+"', '"+password+"')";
+        PstmtUtil pstmtUtil = new PstmtUtil();
+        PreparedStatement pre = pstmtUtil.PstmtUtil(sql);
+        pstmtUtil.closeConnection();
+        return false;
+    }
+
+    @Override
     public int check(String name, String password) throws Exception {
         int num;
         String sql = "select * from user where username = ? and passworld = ?";
@@ -37,6 +46,22 @@ public class UserDaoImpl implements UserDao {
             pstmtUtil.closeConnection();
             return 9;
         }
+    }
+
+    @Override
+    //用户注册查询用户名
+    public boolean check(String name) throws Exception {
+        String sql = "select username from user where username = ?";
+        boolean bl = false;
+        PstmtUtil pstmtUtil = new PstmtUtil();
+        PreparedStatement pre = pstmtUtil.PstmtUtil(sql);
+        pre.setString(1, name);
+        ResultSet resultSet = pre.executeQuery();
+        if (resultSet.next()) {
+            bl = true;
+        }
+        pstmtUtil.closeConnection();
+        return bl;
     }
 
 
