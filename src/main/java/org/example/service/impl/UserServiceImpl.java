@@ -55,8 +55,27 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public boolean buy(String goodid) {
-        return false;
+    //购买商品，num是购买数量,true则购买成功否则失败
+    public boolean buy(int goodid,String name,int num) {
+        boolean flag = false;
+        UserDaoImpl userDao = new UserDaoImpl();
+        try {
+            double[] buy = userDao.checkBuy(goodid,name,num);//获取购买后的余额
+            if (buy[1] < 0){
+                System.err.println("用户余额不足");
+            }else if (buy[0] < 0){
+                System.err.println("商品数目不足");
+            }else {
+                flag = true;
+                boolean flag2 = userDao.changeBuy(buy,goodid,name);//修改表中余额和数目
+                if (!flag2){
+                    System.err.println("修改失败！");
+                }
+            }
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+        return flag;
     }
 
     @Override
