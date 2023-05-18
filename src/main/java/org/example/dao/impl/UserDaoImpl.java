@@ -28,7 +28,18 @@ public class UserDaoImpl implements UserDao {
         int num = pre.executeUpdate(sql);
         System.out.println("操作了" + num + "条数据");
         pstmtUtil.closeConnection();
-        System.out.println("你好");
+        return false;
+    }
+
+    @Override
+    public boolean changeBalance(String username, int money) throws SQLException {
+
+        String sql = "update user set balance += "+money+" where username = '"+username+"'";
+        PstmtUtil pstmtUtil = new PstmtUtil();
+        PreparedStatement pre = pstmtUtil.PstmtUtil(sql);
+        int num = pre.executeUpdate(sql);
+        System.out.println("操作了" + num + "条数据");
+        pstmtUtil.closeConnection();
         return false;
     }
 
@@ -71,6 +82,15 @@ public class UserDaoImpl implements UserDao {
         }
         pstmtUtil.closeConnection();
         return bl;
+    }
+
+    @Override
+    public int checkBalance(String username) throws Exception {
+        String sql = "select username from user where balance = ?";
+        PstmtUtil pstmtUtil = new PstmtUtil();
+        PreparedStatement pre = pstmtUtil.PstmtUtil(sql);
+
+        return 0;
     }
 
 
