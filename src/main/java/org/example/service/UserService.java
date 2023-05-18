@@ -1,7 +1,7 @@
 package org.example.service;
 
 public interface UserService {
-    boolean login(String name,String password);//登录
+    boolean login(String name,String password) throws Exception;//登录
     boolean registe(String name,String password,String password2) throws Exception;//注册
     boolean buy(String goodid);//购买商品
     boolean getVip();//购买vip

@@ -9,6 +9,6 @@ class UserServiceImplTest {
     @Test
     void registe() throws Exception {
         UserServiceImpl userServiceImpl = new UserServiceImpl();
-        userServiceImpl.registe("sbshy","123456", "123456");
+        userServiceImpl.registe("sbshysb", "123456", "123456");
     }
 }
