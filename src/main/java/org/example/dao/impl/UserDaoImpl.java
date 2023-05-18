@@ -25,8 +25,7 @@ public class UserDaoImpl implements UserDao {
         String sql = "insert into user(id, balance, identity, username, passworld) values ("+id+", 0, 1, '"+name+"', '"+password+"')";
         PstmtUtil pstmtUtil = new PstmtUtil();
         PreparedStatement pre = pstmtUtil.PstmtUtil(sql);
-        int num = pre.executeUpdate(sql);
-        System.out.println("操作了" + num + "条数据");
+        pre.executeUpdate(sql);
         pstmtUtil.closeConnection();
         return false;
     }
