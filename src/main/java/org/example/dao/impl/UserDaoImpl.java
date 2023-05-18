@@ -2,7 +2,6 @@ package org.example.dao.impl;
 
 import org.example.dao.UserDao;
 import org.example.domain.User;
-import org.example.util.JdbcUtil;
 import org.example.util.PstmtUtil;
 
 import java.sql.*;
@@ -73,6 +72,11 @@ public class UserDaoImpl implements UserDao {
             bl = false;
         }
         return bl;
+    }
+
+    @Override
+    public int check(int id, String password) throws Exception {
+        return 0;
     }
 
     @Override
