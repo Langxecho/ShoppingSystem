@@ -39,16 +39,14 @@ public class UserServiceImpl implements UserService {
         int num = rdm.nextInt(899999) + 100000;//随机生成6位ID
         UserDaoImpl userDaoImpl = new UserDaoImpl();
         boolean bl = userDaoImpl.check(name);//判断用户名是否注册
-        if (bl = true) {
+        if (bl == true) {
             System.out.println("用户名已存在");
-            bl2 = false;
         } else {
             if (Objects.equals(password, password2)) {
                 userDaoImpl.insert(num, name, password);
                 System.out.println("注册信息导入成功");
             } else {
                 System.out.println("密码不一致");
-                bl2 = false;
             }
         }
         return bl;
