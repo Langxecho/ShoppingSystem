@@ -65,7 +65,7 @@ public class UserServiceImpl implements UserService {
                 System.err.println("商品数目不足");
             }else {
                 flag = true;
-                boolean flag2 = userDao.changeBuy(buy,goodid,name);//修改表中余额和数目
+                boolean flag2 = userDao.changeBuy(buy,goodid,name,num);//修改表中余额和数目
                 if (!flag2){
                     System.err.println("修改失败！");
                 }
@@ -99,22 +99,42 @@ public class UserServiceImpl implements UserService {
     @Override
     public boolean changeName(String oldName,String newName) throws Exception{
         UserDaoImpl userDao = new UserDaoImpl();
-        userDao.changeName(oldName,newName);
-        return false;
+        boolean flag = userDao.changeName(oldName,newName);
+        if (flag){
+            System.out.println("修改成功");
+            return true;
+        }else {
+            return false;
+        }
     }
 
     @Override
-    public boolean review(String text) {
-        return false;
+    public boolean review(String text,int userid,int goodid) throws Exception{
+        UserDaoImpl userDao = new UserDaoImpl();
+        boolean flag = userDao.insertReview(text,userid,goodid);
+        if (flag){
+            System.out.println("评论成功");
+            return true;
+        }else {
+            System.out.println("评论失败");
+            return false;
+        }
+
     }
 
     @Override
-    public boolean addFavourites(String goodid, String number) {
-        return false;
+    //ture则添加成功，否则失败
+    public boolean addFavourites(int goodid, int number,int userid) throws Exception{
+        UserDaoImpl userDao = new UserDaoImpl();
+        boolean flag =userDao.insertFavourites(goodid,number,userid);
+        return flag;
     }
 
     @Override
-    public boolean cleanFavourites() {
-        return false;
+    //ture则清空成功，否则失败
+    public boolean cleanFavourites(int userid) throws Exception{
+        UserDaoImpl userDao = new UserDaoImpl();
+        boolean flag = userDao.changeFavourites(userid);
+        return flag;
     }
 }
