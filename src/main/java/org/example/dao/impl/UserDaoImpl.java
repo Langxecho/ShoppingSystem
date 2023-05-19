@@ -1,5 +1,6 @@
 package org.example.dao.impl;
 
+import cn.hutool.core.date.DateUtil;
 import org.example.dao.UserDao;
 import org.example.domain.User;
 import org.example.util.JdbcUtil;
@@ -29,6 +30,63 @@ public class UserDaoImpl implements UserDao {
         pre.executeUpdate(sql);
         pstmtUtil.closeConnection();
         return false;
+    }
+
+    @Override
+    public boolean insertReview(String text, int userid, int goodid) throws Exception {
+        String today = DateUtil.today();
+        String sql = "insert into review values ("+userid+","+goodid+",'"+text+"','"+today+"')";
+        PstmtUtil pstmtUtil = new PstmtUtil();
+        PreparedStatement pre = pstmtUtil.PstmtUtil(sql);
+        pre.executeUpdate();
+        pstmtUtil.closeConnection();
+        return true;
+    }
+
+    @Override
+    public boolean insertFavourites(int goodid, int number, int userid) throws Exception {
+        boolean flag = false;
+        boolean flag2 = false;
+        String sql1 = "insert into favourites values ("+goodid+","+number+","+userid+")";
+        String sql2 = "select * from goods where id = "+goodid+"";
+        String sql4 = "select * from favourites where uesrid = "+userid+"";
+        PstmtUtil pstmtUtil = new PstmtUtil();
+        PreparedStatement pre2 = pstmtUtil.PstmtUtil(sql2);
+        ResultSet resultSet2 = pre2.executeQuery();
+        if (resultSet2.next()){
+            if (resultSet2.getInt(6) >= number){
+                int num = resultSet2.getInt(6) - number;
+                PreparedStatement pre4 = pstmtUtil.PstmtUtil(sql4);
+                ResultSet resultSet4 = pre4.executeQuery();
+                if (resultSet4.next()){
+                    if (resultSet4.getInt(1) == goodid){
+                        flag2 = true;
+                        String sql5 = "select * from favourites where goodid = "+goodid+" and uesrid = "+userid+"";
+                        PreparedStatement pre5 = pstmtUtil.PstmtUtil(sql5);
+                        ResultSet resultSet5 = pre5.executeQuery();
+                        if (resultSet5.next()){
+                            int oldNum = resultSet5.getInt(2);
+                            int newNum = oldNum + number;
+                            String sql6 = "update favourites set buynumber = "+newNum+" where uesrid = "+userid+" and goodid = "+goodid+"";
+                            PreparedStatement pre6 = pstmtUtil.PstmtUtil(sql6);
+                            pre6.executeUpdate();
+                        }
+                    }
+                }
+                if (!flag2){
+                    PreparedStatement pre1 = pstmtUtil.PstmtUtil(sql1);
+                    pre1.executeUpdate();
+                }
+                String sql3 = "update goods set store = "+num+" where id = "+goodid+"";
+                PreparedStatement pre3 = pstmtUtil.PstmtUtil(sql3);
+                pre3.executeUpdate();
+                flag = true;
+            }else{
+                System.err.println("商品数目不足");
+            }
+        }
+        pstmtUtil.closeConnection();
+        return flag;
     }
 
     @Override
@@ -75,21 +133,32 @@ public class UserDaoImpl implements UserDao {
         return bl;
     }
 
+
     @Override
     public int check(int id, String password) throws Exception {
         return 0;
     }
 
     @Override
-    public boolean changeBuy(double[] buy,int goodid,String name) throws Exception{
+    public boolean changeBuy(double[] buy,int goodid,String name,int num) throws Exception{
         boolean flag = true;
+        String now = DateUtil.now();
         String sql1 = "update goods set store = "+(int)buy[0]+" where id = "+goodid+"";
         String sql2 = "update user set balance = "+buy[1]+" where username = '"+name+"'";
+        String sql3 = "select * from user where username = "+name+"";
         PstmtUtil pstmtUtil = new PstmtUtil();
         PreparedStatement pre1 = pstmtUtil.PstmtUtil(sql1);
         PreparedStatement pre2 = pstmtUtil.PstmtUtil(sql2);
+        PreparedStatement pre3 = pstmtUtil.PstmtUtil(sql3);
         pre1.executeUpdate();
         pre2.executeUpdate();
+        ResultSet resultSet3 = pre3.executeQuery();
+        if (resultSet3.next()){
+            int userid = resultSet3.getInt(1);
+            String sql4 = "insert into buy values ("+goodid+","+num+",'"+now+"',"+userid+");";
+            PreparedStatement pre4 = pstmtUtil.PstmtUtil(sql4);
+            pre4.executeUpdate();
+        }
         pstmtUtil.closeConnection();
         return flag;
     }
@@ -104,6 +173,79 @@ public class UserDaoImpl implements UserDao {
         pre.setString(2,oldName);
         pre.executeUpdate();
         flag = true;
+        pstmtUtil.closeConnection();
+        return flag;
+    }
+    @Override
+    public boolean changeFavourites(int userid) throws Exception {
+        double sum = 0;
+        boolean flag = false;
+        boolean flag2 = false;
+        String sql1 = "select * from favourites where uesrid = "+userid+"";
+        String sql7 = "select * from user where id = "+userid+"";
+        PstmtUtil pstmtUtil = new PstmtUtil();
+        PreparedStatement pre1 = pstmtUtil.PstmtUtil(sql1);
+        PreparedStatement pre7 = pstmtUtil.PstmtUtil(sql7);
+        ResultSet resultSet1 = pre1.executeQuery();
+        ResultSet resultSet7 = pre7.executeQuery();
+        if (resultSet7.next()){
+            if (resultSet7.getInt(3) == 2){
+                flag2 = true;
+            }
+        }
+        String sql6 = "select count(*) as total from goods";
+        PreparedStatement pre6 = pstmtUtil.PstmtUtil(sql6);
+        ResultSet resultSet6 = pre6.executeQuery();
+        int row = 0;
+        if (resultSet6.next()){
+            row = resultSet6.getInt("total");
+        }
+        String[] sql8 = new String[row];
+        PreparedStatement[] pre8 = new PreparedStatement[row];
+        for (int i = 0; i < row;i++){
+            if (resultSet1.next()){
+                String now = DateUtil.now();
+                double discount = 1;
+                int goodId = resultSet1.getInt(1);
+                int buyNumber = resultSet1.getInt(2);
+                String sql2 = "select * from goods where id = "+goodId+"";
+                sql8[i] = "insert into buy values ("+goodId+","+buyNumber+",'"+now+"',"+userid+");";
+                PreparedStatement pre2 = pstmtUtil.PstmtUtil(sql2);
+                pre8[i] = pstmtUtil.PstmtUtil(sql8[i]);
+                ResultSet resultSet2 = pre2.executeQuery();
+                if (resultSet2.next()){
+                    if (flag2){
+                        discount = resultSet2.getDouble(4);
+                    }
+                    double price = resultSet2.getDouble(3);
+                    sum += buyNumber * price * discount;
+                }
+            }
+        }
+        String sql3 = "select * from user where id = "+userid+"";
+        PreparedStatement pre3 = pstmtUtil.PstmtUtil(sql3);
+        ResultSet resultSet3 = pre3.executeQuery();
+        if (resultSet3.next()){
+            double oldBalance = resultSet3.getDouble(2);
+            double newBalance = oldBalance - sum;
+            if (newBalance < 0){
+                System.err.println("余额不足");
+            }else {
+                for (int i = 0; i < row;i++){
+                    if (sql8[i] == null){
+                        break;
+                    }
+                    pre8[i].executeUpdate();
+                }
+                flag = true;
+                String sql4 = "update user set balance = "+newBalance+" where id = "+userid+"";
+                PreparedStatement pre4 = pstmtUtil.PstmtUtil(sql4);
+                pre4.executeUpdate();
+                String sql5 = "delete from favourites where uesrid = "+userid+"";
+                PreparedStatement pre5 = pstmtUtil.PstmtUtil(sql5);
+                pre5.executeUpdate();
+            }
+        }
         pstmtUtil.closeConnection();
         return flag;
     }
@@ -148,7 +290,7 @@ public class UserDaoImpl implements UserDao {
         double[] buy = new double[2];
         String sql1 = "select * from user where username = ?";
         double balance = 0;
-        double sum;
+        double sum = 0;
         String sql2 = "select * from goods where id = ?";
         double price;
         int store;
@@ -166,7 +308,11 @@ public class UserDaoImpl implements UserDao {
             store = resultSet2.getInt(6);//获取商品数目
             buy[0] = store - num;//存储商品剩余数目
             discount = resultSet2.getFloat(4);//获取商品折扣
-            sum = price * discount * num;//计算总价
+            if (resultSet1.getInt(3) == 2){
+                sum = price * discount * num;//会员计算总价
+            }else if (resultSet1.getInt(3) == 1){
+                sum = price * num;//普通计算总价
+            }
             buy[1] = balance - sum;//存储余额
             pstmtUtil.closeConnection();
         }
