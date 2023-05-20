@@ -20,7 +20,7 @@ public class BuyinforUI extends JPanel {
             }
         };
         table.getTableHeader().setReorderingAllowed(false);   //不可整列移动
-        table.getTableHeader().setResizingAllowed(false);   //不可拉动表格
+        table.getTableHeader().setResizingAllowed(false);   //不 可拉动表格
         setLayout(new FlowLayout(FlowLayout.LEFT));
 
 //        滚动
