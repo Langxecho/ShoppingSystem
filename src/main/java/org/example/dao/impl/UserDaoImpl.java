@@ -89,6 +89,8 @@ public class UserDaoImpl implements UserDao {
         return flag;
     }
 
+
+
     @Override
     //充值余额
     public boolean changeBalance(String username, double money) throws SQLException {
@@ -132,6 +134,7 @@ public class UserDaoImpl implements UserDao {
         }
         return bl;
     }
+
 
     @Override
     public int check(int id, String password) throws Exception {
@@ -253,6 +256,8 @@ public class UserDaoImpl implements UserDao {
         pstmtUtil.closeConnection();
         return money;
     }
+
+
 
 
 }
