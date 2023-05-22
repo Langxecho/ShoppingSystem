@@ -2,11 +2,14 @@ package org.example.dao.impl;
 
 import cn.hutool.core.date.DateUtil;
 import org.example.dao.UserDao;
+import org.example.domain.Review;
 import org.example.domain.User;
 import org.example.util.JdbcUtil;
+import org.example.domain.buy;
 import org.example.util.PstmtUtil;
 
 import java.sql.*;
+import java.util.ArrayList;
 
 /**
  * @author 19086
@@ -89,8 +92,6 @@ public class UserDaoImpl implements UserDao {
         return flag;
     }
 
-
-
     @Override
     //充值余额
     public boolean changeBalance(String username, double money) throws SQLException {
@@ -134,7 +135,6 @@ public class UserDaoImpl implements UserDao {
         }
         return bl;
     }
-
 
     @Override
     public int check(int id, String password) throws Exception {
@@ -343,7 +343,121 @@ public class UserDaoImpl implements UserDao {
         return money;
     }
 
+    @Override
+    public int getid(String user) {
+        String sql = "select id from user where username = ?";
+        PstmtUtil pst = new PstmtUtil();
+        int id = 0;
+        PreparedStatement pre = pst.PstmtUtil(sql);
+        try {
+            pre.setString(1,user);
+            ResultSet rs = pre.executeQuery();
+            rs.next();
+            id = rs.getInt("id");
+        } catch (SQLException e) {
+            System.out.println("用户名不存在");
+            throw new RuntimeException(e);
+        }
+        pst.closeConnection();
+        return id;
+    }
+
+    @Override
+    public String getuser(int id) {
+        String sql = "select username from user where id = ?";
+        PstmtUtil pst = new PstmtUtil();
+        String user;
+        PreparedStatement pre = pst.PstmtUtil(sql);
+        try {
+            pre.setInt(1,id);
+            ResultSet rs = pre.executeQuery();
+            rs.next();
+            user = rs.getString("username");
+        } catch (SQLException e) {
+            System.out.println("用户名不存在");
+            throw new RuntimeException(e);
+        }
+        pst.closeConnection();
+        return user;
+    }
+
+    @Override
+    public String getgoodName(int goodid) {
+        String sql = "select name from goods where id = ?";
+        PstmtUtil pst = new PstmtUtil();
+        String goodname;
+        PreparedStatement pre = pst.PstmtUtil(sql);
+        try {
+            pre.setInt(1,goodid);
+            ResultSet rs = pre.executeQuery();
+            rs.next();
+            goodname = rs.getString("name");
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        pst.closeConnection();
+        return goodname;
+    }
 
 
 
+    @Override
+    public ArrayList queryCheckreview() {
+        ArrayList<Review> arrayList = new ArrayList<>();
+        String sql = "select * from review";
+        PstmtUtil pst = new PstmtUtil();
+        PreparedStatement pre = pst.PstmtUtil(sql);
+        try {
+            ResultSet rs = pre.executeQuery();
+            while(rs.next()){
+                Review re = new Review();
+                re.setContent(rs.getString("content"));
+                re.setTime(rs.getString("time"));
+                re.setUserid(rs.getInt("userid"));
+                re.setGoodid(rs.getInt("goodid"));
+                arrayList.add(re);
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        pst.closeConnection();
+        try {
+            pre.close();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return arrayList;
+    }
+
+    @Override
+    public ArrayList queryBuy() {
+        ArrayList<buy> arrayList = new ArrayList<>();
+        String sql = "select * from buy";
+        PstmtUtil pst = new PstmtUtil();
+        PreparedStatement pre = pst.PstmtUtil(sql);
+        try {
+            ResultSet rs = pre.executeQuery();
+            while(rs.next()){
+                buy by = new buy();
+                by.setTime(rs.getString("time"));
+                by.setUserid(rs.getInt("userid"));
+                by.setGoodid(rs.getInt("goodid"));
+                by.setCount(rs.getInt("count"));
+                by.setPay(rs.getDouble("pay"));
+                arrayList.add(by);
+
+            }
+
+    }catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        pst.closeConnection();
+        try {
+            pre.close();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+
+        return arrayList;
+}
 }
