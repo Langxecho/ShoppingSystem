@@ -41,7 +41,7 @@ public class JdbcUtil {
     public void closeConnection(Connection con) throws SQLException {
         if(con != null){
             con.close();
-            System.out.println("数据库连接关闭");
+//            System.out.println("数据库连接关闭");
         }
     }
 }

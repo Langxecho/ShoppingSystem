@@ -8,8 +8,12 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 public class BuyUI extends JFrame{
+    static String user;
     public static JFrame buy = new JFrame();
     public static JFrame b = new JFrame();
+    BuyUI(String user){
+        this.user = user;
+    }
     public static void showBuy() {
 //        商品详情界面
 
@@ -89,7 +93,7 @@ public class BuyUI extends JFrame{
         review.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                ReviewUI reviewUI = new ReviewUI();
+                ReviewUI reviewUI = new ReviewUI(user);
                 JFrame a  = reviewUI.generatereview();
             }
         });

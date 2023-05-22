@@ -3,6 +3,7 @@ package org.example.dao;
 import org.example.domain.User;
 
 import java.sql.SQLException;
+import java.util.ArrayList;
 
 public interface UserDao {
     int insert(User user) throws SQLException;
@@ -18,5 +19,12 @@ public interface UserDao {
     boolean changeBalance2(String username) throws SQLException;//开通Vip扣除余额
     boolean changeVip(String username) throws SQLException;//开通Vip
     int check(int id,String password) throws Exception;
-    double checkBalance(String username) throws SQLException;//获取余额
+    double checkBalance(String username) throws SQLException;//获取余额、
+    int getid (String user);   //根据一个已经存在的用户名，返回他的id
+    String getuser(int id);//根据一个已存在的用户id，返回他的用户名
+    String getgoodName(int goodid);//获得指定商品的名字
+
+    ArrayList queryCheckreview();//返回数据库review表查询结果集
+    ArrayList queryBuy();//返回数据库buy表结果集
+
 }

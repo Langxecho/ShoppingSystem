@@ -1,26 +1,26 @@
 package org.example.frame;
 
+import org.example.dao.impl.UserDaoImpl;
+import org.example.service.impl.UserServiceImpl;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 public class BuyinforUI extends JPanel {
+    String user;
+    JTable table;
     String empty1 = "                                                                                                                                                                                                                                                                                                                                                                             ";
 
-    public BuyinforUI() {
+    public BuyinforUI(String user) {
+        this.user = user;
         setLayout(null);
 
 //        表格
-        String[] columnName = {"商品", "购买时间", "购买数量","价格(元)"};
-        String[][] tableValues = {{"农夫山泉", "2023/3/22 19:28:36", "5", "10"}, {"冰红茶", "2023/3/22 19:29:44", "5", "15"}};
-        JTable table = new JTable(tableValues, columnName) {
-            public boolean isCellEditable(int row, int column) {
-                return false;
-            }
-        };
-        table.getTableHeader().setReorderingAllowed(false);   //不可整列移动
-        table.getTableHeader().setResizingAllowed(false);   //不 可拉动表格
+
+        table = new UserServiceImpl().initbuyTable(new UserDaoImpl().getid(user));
+//        System.out.println("shhhhhhhhhhhhhhhhhhhhhhhhhhhhhhh");
         setLayout(new FlowLayout(FlowLayout.LEFT));
 
 //        滚动
@@ -46,7 +46,7 @@ public class BuyinforUI extends JPanel {
             @Override
             public void actionPerformed(ActionEvent e) {
                 //关联评论界面
-                ReviewUI a = new ReviewUI();
+                ReviewUI a = new ReviewUI(user);
                 a.generatereview();
 
             }
