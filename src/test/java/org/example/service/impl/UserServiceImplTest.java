@@ -18,4 +18,22 @@ class UserServiceImplTest {
         UserServiceImpl userService = new UserServiceImpl();
         userService.registe("shy", "123456", "123456");
     }
+
+    @Test
+    void cleanFavourites() throws Exception {
+        UserServiceImpl userService = new UserServiceImpl();
+        userService.cleanFavourites(29961670);
+    }
+
+    @Test
+    void addFavourites() throws Exception {
+        UserServiceImpl userService = new UserServiceImpl();
+        userService.addFavourites(1,5,29961670);
+    }
+
+    @Test
+    void buy() {
+        UserServiceImpl userService = new UserServiceImpl();
+        userService.buy(1,"nbshy",10);
+    }
 }

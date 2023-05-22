@@ -65,7 +65,7 @@ public class UserServiceImpl implements UserService {
                 System.err.println("商品数目不足");
             }else {
                 flag = true;
-                boolean flag2 = userDao.changeBuy(buy,goodid,name);//修改表中余额和数目
+                boolean flag2 = userDao.changeBuy(buy,goodid,name,num);//修改表中余额和数目
                 if (!flag2){
                     System.err.println("修改失败！");
                 }
@@ -131,7 +131,10 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public boolean cleanFavourites() {
-        return false;
+    //ture则清空成功，否则失败
+    public boolean cleanFavourites(int userid) throws Exception{
+        UserDaoImpl userDao = new UserDaoImpl();
+        boolean flag = userDao.changeFavourites(userid);
+        return flag;
     }
 }
