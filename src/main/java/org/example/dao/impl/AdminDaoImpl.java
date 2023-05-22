@@ -3,11 +3,16 @@ package org.example.dao.impl;
 import org.example.dao.AdminDAO;
 import org.example.domain.Goods;
 import org.example.domain.User;
+import org.example.util.JdbcUtil;
 import org.example.util.PstmtUtil;
 
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import javax.swing.*;
+import javax.swing.table.DefaultTableModel;
+import java.io.*;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.sql.*;
 import java.util.ArrayList;
 
 /**
@@ -53,5 +58,74 @@ public class AdminDaoImpl implements AdminDAO {
             throw new RuntimeException(e);
         }
         return arrayList;
+    }
+
+    @Override
+    //删除评论
+    public boolean deleteReview(int goodid, int userid) throws SQLException {
+        String sql = "delete from review where goodid = "+goodid+" and userid = "+userid+"";
+        PstmtUtil pstmtUtil = new PstmtUtil();
+        PreparedStatement pre = pstmtUtil.PstmtUtil(sql);
+        pre.executeUpdate(sql);
+        System.out.println("删除成功");
+        pstmtUtil.closeConnection();
+        return false;
+    }
+
+//    @Override
+//    //删除商品选中行
+//    public JTable deleteForm(int index, JTable table) {
+//        DefaultTableModel model = (DefaultTableModel) table.getModel();
+//        model.removeRow(index);
+//        return table;
+//    }
+
+    @Override
+    //备份数据库
+    public boolean backup() throws Exception {
+        String url = "jdbc:mysql://106.14.246.27:3306/shoppingsystem?useUnicode=true&characterEncoding=utf-8";
+        String userName = "root";
+        String password = "kobe24";
+        String databaseName = "shoppingsystem";
+        String backupPath = "D:/db_backup.sql";
+        Connection con = DriverManager.getConnection(url, userName, password);
+        String dumpCommand = "C:/Program Files/MySQL/MySQL Server 8.0/bin/mysqldump.exe -u " + userName + " -p" + password + " " + databaseName + " --result-file=" + backupPath;
+        Process process = Runtime.getRuntime().exec(dumpCommand);
+        con.close();
+        process.waitFor();
+
+
+
+        
+        System.out.println("数据库备份成功");
+        return false;
+    }
+
+    @Override
+    public boolean restore() throws Exception {
+        String url = "jdbc:mysql://106.14.246.27:3306/shoppingsystem?useUnicode=true&characterEncoding=utf-8";
+        String userName = "root";
+        String password = "kobe24";
+        String backupPath = "D:/db_backup.sql";
+        try (Connection conn = DriverManager.getConnection(url, userName, password);
+             Statement stmt = conn.createStatement();
+             BufferedReader reader = new BufferedReader(new FileReader(backupPath))) {
+            String line;
+            StringBuilder sb = new StringBuilder();
+            while ((line = reader.readLine()) != null) {
+                sb.append(line);
+            }
+            String[] sqlStatements = sb.toString().split(";"); // 将 SQL 语句拆分
+
+            for (String sql : sqlStatements) {
+                stmt.executeUpdate(sql); // 执行 SQL 语句
+            }
+
+            System.out.println("Database restore completed.");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        System.out.println("数据库还原成功");
+        return false;
     }
 }
