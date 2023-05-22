@@ -1,6 +1,7 @@
 package org.example.service;
 
 import javax.swing.*;
+import java.sql.SQLException;
 
 public interface AdminService {
     JTable table();//生成管理员界面初始化的表格
@@ -8,7 +9,7 @@ public interface AdminService {
     boolean addGood(String name,Double price,Double portPrice,int goodid,String category,Double discount,int store);
     JTable findGood(String name,JTable table);//商品名称查找商品
     JTable findGood(int id, JTable table);//商品id查找商品
-    boolean delReview(int goodid,int userid);//删除评论
+    boolean delReview(int goodid,int userid) throws SQLException;//删除评论
     boolean backup();//备份数据库
     boolean restore();//恢复数据库
     boolean print();//打印表单
