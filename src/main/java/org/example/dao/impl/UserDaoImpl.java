@@ -2,11 +2,13 @@ package org.example.dao.impl;
 
 import cn.hutool.core.date.DateUtil;
 import org.example.dao.UserDao;
+import org.example.domain.Favourites;
 import org.example.domain.Review;
 import org.example.domain.User;
 import org.example.util.JdbcUtil;
 import org.example.domain.buy;
 import org.example.util.PstmtUtil;
+import org.example.util.showError;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -179,7 +181,7 @@ public class UserDaoImpl implements UserDao {
         return flag;
     }
     @Override
-    public boolean changeFavourites(int userid) throws Exception {
+    public double changeFavourites(int userid) throws Exception {
         double sum = 0;
         boolean flag = false;
         boolean flag2 = false;
@@ -232,6 +234,7 @@ public class UserDaoImpl implements UserDao {
             double oldBalance = resultSet3.getDouble(2);
             double newBalance = oldBalance - sum;
             if (newBalance < 0){
+                showError.showError("出错","余额不足，请充值");
                 System.err.println("余额不足");
             }else {
                 for (int i = 0; i < row;i++){
@@ -250,7 +253,7 @@ public class UserDaoImpl implements UserDao {
             }
         }
         pstmtUtil.closeConnection();
-        return flag;
+        return sum;
     }
     @Override
     public int check(String name, String password) throws Exception {
@@ -360,6 +363,25 @@ public class UserDaoImpl implements UserDao {
         }
         pst.closeConnection();
         return id;
+    }
+
+    @Override
+    public Double getprice(int goodid) {
+        String sql = "select price from goods where id = ?";
+        PstmtUtil pst = new PstmtUtil();
+        double price = 0;
+        PreparedStatement pre = pst.PstmtUtil(sql);
+        try {
+            pre.setInt(1,goodid);
+            ResultSet rs = pre.executeQuery();
+            rs.next();
+            price = rs.getDouble("price");
+        } catch (SQLException e) {
+            System.out.println("用户名不存在");
+            throw new RuntimeException(e);
+        }
+        pst.closeConnection();
+        return price;
     }
 
     @Override
@@ -477,4 +499,36 @@ public class UserDaoImpl implements UserDao {
 
         return arrayList;
 }
+
+    @Override
+    public ArrayList queryFavourites(int userid) {
+        ArrayList<Favourites> arrayList = new ArrayList<>();
+        String sql = "select * from favourites";
+        PstmtUtil pst = new PstmtUtil();
+        PreparedStatement pre = pst.PstmtUtil(sql);
+        try {
+            ResultSet rs = pre.executeQuery();
+            while(rs.next()){
+                if (rs.getInt("uesrid") == userid){
+                    Favourites fa = new Favourites();
+                    fa.setBuynumber(rs.getInt("buynumber"));
+                    fa.setGoodid(rs.getInt("goodid"));
+                    fa.setUesrid(rs.getInt("uesrid"));
+                    arrayList.add(fa);}
+
+
+            }
+
+        }catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        pst.closeConnection();
+        try {
+            pre.close();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+
+        return arrayList;
+    }
 }
