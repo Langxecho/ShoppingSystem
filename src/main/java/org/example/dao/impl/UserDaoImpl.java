@@ -2,6 +2,7 @@ package org.example.dao.impl;
 
 import cn.hutool.core.date.DateUtil;
 import org.example.dao.UserDao;
+import org.example.domain.Favourites;
 import org.example.domain.Review;
 import org.example.domain.User;
 import org.example.util.JdbcUtil;
@@ -363,6 +364,25 @@ public class UserDaoImpl implements UserDao {
     }
 
     @Override
+    public Double getprice(int goodid) {
+        String sql = "select price from goods where id = ?";
+        PstmtUtil pst = new PstmtUtil();
+        double price = 0;
+        PreparedStatement pre = pst.PstmtUtil(sql);
+        try {
+            pre.setInt(1,goodid);
+            ResultSet rs = pre.executeQuery();
+            rs.next();
+            price = rs.getDouble("price");
+        } catch (SQLException e) {
+            System.out.println("用户名不存在");
+            throw new RuntimeException(e);
+        }
+        pst.closeConnection();
+        return price;
+    }
+
+    @Override
     public String getuser(int id) {
         String sql = "select username from user where id = ?";
         PstmtUtil pst = new PstmtUtil();
@@ -399,6 +419,23 @@ public class UserDaoImpl implements UserDao {
         return goodname;
     }
 
+    @Override
+    public int getgoodid(String name) {
+        String sql = "select id from goods where name = ?";
+        PstmtUtil pst = new PstmtUtil();
+        int goodid;
+        PreparedStatement pre = pst.PstmtUtil(sql);
+        try {
+            pre.setString(1,name);
+            ResultSet rs = pre.executeQuery();
+            rs.next();
+            goodid = rs.getInt("id");
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        pst.closeConnection();
+        return goodid;
+    }
 
 
     @Override
@@ -460,4 +497,36 @@ public class UserDaoImpl implements UserDao {
 
         return arrayList;
 }
+
+    @Override
+    public ArrayList queryFavourites(int userid) {
+        ArrayList<Favourites> arrayList = new ArrayList<>();
+        String sql = "select * from favourites";
+        PstmtUtil pst = new PstmtUtil();
+        PreparedStatement pre = pst.PstmtUtil(sql);
+        try {
+            ResultSet rs = pre.executeQuery();
+            while(rs.next()){
+                if (rs.getInt("uesrid") == userid){
+                    Favourites fa = new Favourites();
+                    fa.setBuynumber(rs.getInt("buynumber"));
+                    fa.setGoodid(rs.getInt("goodid"));
+                    fa.setUesrid(rs.getInt("uesrid"));
+                    arrayList.add(fa);}
+
+
+            }
+
+        }catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        pst.closeConnection();
+        try {
+            pre.close();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+
+        return arrayList;
+    }
 }

@@ -2,6 +2,7 @@ package org.example.service.impl;
 
 import org.example.dao.impl.AdminDaoImpl;
 import org.example.dao.impl.UserDaoImpl;
+import org.example.domain.Favourites;
 import org.example.domain.Goods;
 import org.example.domain.Review;
 import org.example.domain.buy;
@@ -190,6 +191,30 @@ public class UserServiceImpl implements UserService {
         }
 //        JTable table = new JTable(tableValues,columnName);
         JTable table = new JTable(tableValues, columnName) {
+            public boolean isCellEditable(int row, int column) {
+                return false;
+            }
+        };
+        table.getTableHeader().setReorderingAllowed(false);   //不可整列移动
+        table.getTableHeader().setResizingAllowed(false);   //不可拉动表格
+        return table;
+    }
+
+    @Override
+    public JTable initFavouritesTable(int userid) {
+        String[] colunmName = {"商品", "购买数量","价格(元)"};
+        ArrayList<Favourites> array = new UserDaoImpl().queryFavourites(userid);
+        String tableValues[][] = new String[array.size()][3];
+        for (int i = 0;i < array.size();i++){
+            Favourites fa = array.get(i);
+            if (fa.getUesrid() == userid){
+                tableValues[i][0] = new UserDaoImpl().getgoodName(fa.getGoodid());
+                tableValues[i][1] = String.valueOf(fa.getBuynumber());
+                tableValues[i][2] = String.valueOf(fa.getBuynumber() * new UserDaoImpl().getprice(fa.getGoodid()));
+            }
+        }
+//        JTable table = new JTable(tableValues,columnName);
+        JTable table = new JTable(tableValues, colunmName) {
             public boolean isCellEditable(int row, int column) {
                 return false;
             }
