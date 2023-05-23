@@ -22,10 +22,14 @@ public interface UserDao {
     int check(int id,String password) throws Exception;
     double checkBalance(String username) throws SQLException;//获取余额、
     int getid (String user);   //根据一个已经存在的用户名，返回他的id
+    Double getprice(int goodid);//根据一个商品id，返回他的价格
     String getuser(int id);//根据一个已存在的用户id，返回他的用户名
     String getgoodName(int goodid);//获得指定商品的名字
+    int getgoodid(String name);//获得指定商品名字的id
+
+    boolean delFavourites(String user,int goodid,int buynumber) throws Exception;
 
     ArrayList queryCheckreview();//返回数据库review表查询结果集
     ArrayList queryBuy();//返回数据库buy表结果集
-
+    ArrayList queryFavourites(int userid);//返回购物车表的结果集
 }
