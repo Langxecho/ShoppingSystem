@@ -11,6 +11,7 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 
 /**
@@ -80,23 +81,66 @@ public class AdminServiceImpl implements AdminService {
         return false;
     }
 
-    @Override
-    public boolean delGood(String id) {
-        return false;
+    @Override//根据商品名查找
+    public JTable findGood(String name, JTable table) {
+        Goods target = null;
+        AdminDaoImpl imp = new AdminDaoImpl();
+        ArrayList<Goods> arrayList = imp.checkGoods();
+        Object []columnName = new Object[]{"商品名","类别","单价","折扣","进价","库存","商品ID"};//表格的字段名
+        for (int i = 0; i < arrayList.size(); i++) {
+            Goods goods = arrayList.get(i);
+            if (goods.getId().equals(name)){
+                target = goods;
+                break;
+            }
+        }
+        String[][] rowData = new String[arrayList.size()][7];
+        for (int i = 0; i < arrayList.size();i++){
+            rowData[i][0] = String.valueOf(target.getName());
+            rowData[i][1] = String.valueOf(target.getCategory());
+            rowData[i][2] = String.valueOf(target.getPrice());
+            rowData[i][3] = String.valueOf(target.getDiscount());
+            rowData[i][4] = String.valueOf(target.getPortprice());
+            rowData[i][5] = String.valueOf(target.getStore());
+            rowData[i][6] = String.valueOf(target.getId());
+        }
+        table = new JTable(rowData, columnName);
+        return table;
     }
 
     @Override
-    public boolean findGood(String name) {
-        return false;
+    //根据商品id查找
+    public JTable findGood(int id, JTable table) {
+        Goods target = null;
+        AdminDaoImpl imp = new AdminDaoImpl();
+        ArrayList<Goods> arrayList = imp.checkGoods();
+        Object []columnName = new Object[]{"商品名","类别","单价","折扣","进价","库存","商品ID"};//表格的字段名
+        for (int i = 0; i < arrayList.size(); i++) {
+            Goods goods = arrayList.get(i);
+            if (goods.getId() == id){
+                target = goods;
+                break;
+            }
+        }
+        String[][] rowData = new String[arrayList.size()][7];
+        for (int i = 0; i < arrayList.size();i++){
+            rowData[i][0] = String.valueOf(target.getName());
+            rowData[i][1] = String.valueOf(target.getCategory());
+            rowData[i][2] = String.valueOf(target.getPrice());
+            rowData[i][3] = String.valueOf(target.getDiscount());
+            rowData[i][4] = String.valueOf(target.getPortprice());
+            rowData[i][5] = String.valueOf(target.getStore());
+            rowData[i][6] = String.valueOf(target.getId());
+        }
+        table = new JTable(rowData, columnName);
+        return table;
     }
 
     @Override
-    public boolean findGood(int id) {
-        return false;
-    }
-
-    @Override
-    public boolean delReview(int goodid, int userid) {
+    //删除评论
+    public boolean delReview(int goodid, int userid) throws SQLException {
+        AdminDaoImpl adminDao = new AdminDaoImpl();
+        adminDao.deleteReview(goodid, userid);
         return false;
     }
 
@@ -152,7 +196,6 @@ public class AdminServiceImpl implements AdminService {
         AdminDaoImpl imp = new AdminDaoImpl();
         ArrayList<Goods> arrayList = imp.checkGoods();
         Object []columnName = new Object[]{"商品名","类别","单价","折扣","进价","库存","商品ID"};//表格的字段名
-
         String[][] rowData = new String[arrayList.size()][7];
         for (int i = 0; i < arrayList.size();i++){
             Goods goo = arrayList.get(i);

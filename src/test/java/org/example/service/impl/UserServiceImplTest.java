@@ -7,9 +7,15 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class UserServiceImplTest {
 
-    @Test
+
     void changeName() throws Exception {
         UserServiceImpl userService = new UserServiceImpl();
 //        userService.changeName("cao","kao");
+    }
+
+    @Test
+    void registe() throws Exception {
+        UserServiceImpl userService = new UserServiceImpl();
+        userService.registe("shy", "123456", "123456");
     }
 }

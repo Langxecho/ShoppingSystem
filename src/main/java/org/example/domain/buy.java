@@ -16,5 +16,7 @@ public class buy {
     private Integer goodid;
     private Integer count;
     private String time;
+    private Integer userid;
+    private Double pay;
 
 }
