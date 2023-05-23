@@ -2,6 +2,8 @@ package org.example.service;
 
 import javax.swing.*;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.ArrayList;
 
 public interface UserService {
     int login(String name,String password) throws Exception;//登录
@@ -13,8 +15,9 @@ public interface UserService {
     boolean review(String text,int userid,int goodid) throws Exception;//添加评论
     boolean addFavourites(int goodid,int number,int userid)throws Exception;//添加购物车
     double cleanFavourites(int userid) throws Exception;//购物车内容购买
-    JTable inittable(JTable table);//加载用户购买界面的表格
-
+    JTable inittable();//加载用户购买界面的表格
+    JTable initbuyTable(int userid);//加载购买信息界面的表格
+    ArrayList flashReview(int goodid);//刷新评论区方法
 
 
 }

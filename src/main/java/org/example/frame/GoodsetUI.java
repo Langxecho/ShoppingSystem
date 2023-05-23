@@ -17,11 +17,12 @@ import java.sql.ResultSet;
 import java.util.ArrayList;
 
 public class GoodsetUI extends JPanel {
+    String user;
     JTable table;
-    public GoodsetUI() {
+    public GoodsetUI(String user) {
         setLayout(null);
-
-        table = new UserServiceImpl().inittable(table);
+        this.user = user;
+        table = new UserServiceImpl().inittable();
 
 //        滚动
         JScrollPane scrollPane = new JScrollPane(

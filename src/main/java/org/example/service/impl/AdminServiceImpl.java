@@ -11,6 +11,7 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 
 /**
@@ -136,7 +137,10 @@ public class AdminServiceImpl implements AdminService {
     }
 
     @Override
-    public boolean delReview(int goodid, int userid) {
+    //删除评论
+    public boolean delReview(int goodid, int userid) throws SQLException {
+        AdminDaoImpl adminDao = new AdminDaoImpl();
+        adminDao.deleteReview(goodid, userid);
         return false;
     }
 
@@ -192,7 +196,6 @@ public class AdminServiceImpl implements AdminService {
         AdminDaoImpl imp = new AdminDaoImpl();
         ArrayList<Goods> arrayList = imp.checkGoods();
         Object []columnName = new Object[]{"商品名","类别","单价","折扣","进价","库存","商品ID"};//表格的字段名
-
         String[][] rowData = new String[arrayList.size()][7];
         for (int i = 0; i < arrayList.size();i++){
             Goods goo = arrayList.get(i);
