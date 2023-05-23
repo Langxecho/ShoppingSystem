@@ -97,10 +97,6 @@ public class AdminDaoImpl implements AdminDAO {
         Process process = Runtime.getRuntime().exec(dumpCommand);
         con.close();
         process.waitFor();
-
-
-
-        
         System.out.println("数据库备份成功");
         return false;
     }
