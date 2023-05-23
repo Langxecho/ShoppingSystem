@@ -19,6 +19,7 @@ import java.util.ArrayList;
 public class GoodsetUI extends JPanel {
     String user;
     JTable table;
+    int index;
     public GoodsetUI(String user) {
         setLayout(null);
         this.user = user;
@@ -38,32 +39,33 @@ public class GoodsetUI extends JPanel {
 //        右击菜单
         JPopupMenu menu = new JPopupMenu();
         JMenuItem checkItem = new JMenuItem("查看详情");
-        JMenuItem addItem = new JMenuItem("添加购物车");
-        JMenuItem buyItem = new JMenuItem("购买商品");
+//        JMenuItem addItem = new JMenuItem("添加购物车");
+//        JMenuItem buyItem = new JMenuItem("购买商品");
         menu.add(checkItem);
-        menu.add(addItem);
-        menu.add(buyItem);
+//        menu.add(addItem);
+//        menu.add(buyItem);
 
         checkItem.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                BuyUI.showBuy();
+                BuyUI buyUI = new BuyUI(user, table);
+                buyUI.showBuy();
             }
         });
 
-        addItem.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-
-            }
-        });
-
-        buyItem.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-
-            }
-        });
+//        addItem.addActionListener(new ActionListener() {
+//            @Override
+//            public void actionPerformed(ActionEvent e) {
+//
+//            }
+//        });
+//
+//        buyItem.addActionListener(new ActionListener() {
+//            @Override
+//            public void actionPerformed(ActionEvent e) {
+//
+//            }
+//        });
 
         table.addMouseListener(new MouseListener() {
             @Override

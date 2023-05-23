@@ -21,6 +21,7 @@ import java.sql.*;
  **/
 public class AdminUI {
     public AdminUI(String user) {
+
         this.user = user;
     }
 
@@ -298,6 +299,7 @@ public class AdminUI {
                 //这里还需要一个增加商品后的刷新
                 table = new AdminServiceImpl().flashForm(table);
                 frame.dispose();
+                showError showError = new showError();
                 showError.showError("添加商品", "添加成功");
             } catch (Exception ex) {
                 throw new RuntimeException(ex);
@@ -334,6 +336,29 @@ public class AdminUI {
         Portprice.setText("");
         Store.setText("");
         Id.setText("");
+    }
+
+    void GoodsCheck() throws Exception{
+        JFrame jFrame = new JFrame("查找商品");
+        JPanel jPanel = new JPanel();
+        jFrame.setVisible(true);
+        jFrame.setResizable(false);
+        jFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        jFrame.setBounds(100,100,400,250);
+        jFrame.setLocationRelativeTo(null);
+        jPanel.setLayout(null);
+        jFrame.setContentPane(jPanel);
+
+        JLabel jLabel = new JLabel("请输入商品名或id");
+        JButton check = new JButton("查找");
+        JTextField text = new JTextField();
+        jLabel.setBounds(130,20,200,50);
+        jLabel.setFont(new Font("宋体",0,16));
+        check.setBounds(145,150,100,30);
+        text.setBounds(100,90,200,30);
+        jPanel.add(jLabel);
+        jPanel.add(check);
+        jPanel.add(text);
     }
 
 }
