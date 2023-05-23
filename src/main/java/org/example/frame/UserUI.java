@@ -32,7 +32,7 @@ public class UserUI extends JFrame{
         root.add(panel);
         panel.setLayout(cardLayout);
 //        添加卡片
-        GoodsetUI goodsetUI = new GoodsetUI();
+        GoodsetUI goodsetUI = new GoodsetUI(getuser);
         panel.add(goodsetUI, "goodsetUI");
 //
         UserinforUI userinforUI = new UserinforUI(getuser);
@@ -41,7 +41,7 @@ public class UserUI extends JFrame{
 //        FavouritesUI favouritesUI = new FavouritesUI(getuser);
 //        panel.add(favouritesUI, "favouritesUI");
 //
-        BuyinforUI buyinforUI = new BuyinforUI();
+        BuyinforUI buyinforUI = new BuyinforUI(getuser);
         panel.add(buyinforUI, "buyinforUI");
 
 //        按钮创建

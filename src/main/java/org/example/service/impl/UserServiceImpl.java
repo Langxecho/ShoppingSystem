@@ -3,6 +3,9 @@ package org.example.service.impl;
 import org.example.dao.impl.AdminDaoImpl;
 import org.example.dao.impl.UserDaoImpl;
 import org.example.domain.Goods;
+import org.example.domain.Review;
+import org.example.domain.buy;
+import org.example.frame.ReviewUI;
 import org.example.service.UserService;
 
 import javax.swing.*;
@@ -145,7 +148,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     //初始化用户购买界面的表格
-    public JTable inittable(JTable table) {
+    public JTable inittable() {
         String[] columnName = {"商品", "分类", "价格", "折扣", "库存"};
         ArrayList<Goods> array = new AdminDaoImpl().checkGoods();
         String tableValues[][] = new String[array.size()][5];
@@ -157,8 +160,7 @@ public class UserServiceImpl implements UserService {
         tableValues[i][3] = String.valueOf(goods.getDiscount());
         tableValues[i][4] = String.valueOf(goods.getStore());
         }
-        TableModel model = new DefaultTableModel(tableValues,columnName);
-        table.setModel(model);
+        JTable table = new JTable(tableValues,columnName);
         table = new JTable(tableValues, columnName) {
             public boolean isCellEditable(int row, int column) {
                 return false;
@@ -170,5 +172,44 @@ public class UserServiceImpl implements UserService {
         table.getTableHeader().setReorderingAllowed(false);   //不可整列移动
         table.getTableHeader().setResizingAllowed(false);   //不可拉动表格
         return table;
+    }
+
+    @Override
+    public JTable initbuyTable(int userid) {
+        String[] columnName = {"商品", "购买时间", "购买数量","价格(元)"};
+        ArrayList<buy> array = new UserDaoImpl().queryBuy();
+        String tableValues[][] = new String[array.size()][4];
+        for (int i = 0;i < array.size();i++){
+            buy by = array.get(i);
+            if (by.getUserid() == userid){
+                tableValues[i][0] = new UserDaoImpl().getgoodName(by.getGoodid());
+                tableValues[i][1] = by.getTime();
+                tableValues[i][2] = String.valueOf(by.getCount());
+                tableValues[i][3] = String.valueOf(by.getPay());
+            }
+        }
+//        JTable table = new JTable(tableValues,columnName);
+        JTable table = new JTable(tableValues, columnName) {
+            public boolean isCellEditable(int row, int column) {
+                return false;
+            }
+        };
+        table.getTableHeader().setReorderingAllowed(false);   //不可整列移动
+        table.getTableHeader().setResizingAllowed(false);   //不可拉动表格
+        return table;
+    }
+
+    @Override
+    public ArrayList flashReview(int goodid) {
+       ArrayList<JPanel> arrayList = new ArrayList<>();
+       ArrayList<Review> ar = new UserDaoImpl().queryCheckreview();
+       for(int i = 0;i < ar.size();i++){
+           Review re = ar.get(i);
+           if (re.getGoodid() == goodid){
+               JPanel panel = new ReviewUI("root").reviewarea(new UserDaoImpl().getuser(re.getUserid()),re.getContent(), re.getTime());
+               arrayList.add(panel);
+           }
+        }
+       return arrayList;
     }
 }
