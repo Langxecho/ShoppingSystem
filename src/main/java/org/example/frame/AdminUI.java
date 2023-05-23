@@ -20,6 +20,10 @@ import java.sql.*;
  * @return
  **/
 public class AdminUI {
+    public AdminUI(String user) {
+        this.user = user;
+    }
+
     JScrollPane scro;//滚动面板
     Object []columnName = new Object[]{"商品名","类别","单价","折扣","进价","库存","商品ID"};//表格的字段名
     JFrame admin = new JFrame("管理员界面");//管理员界面主界面
