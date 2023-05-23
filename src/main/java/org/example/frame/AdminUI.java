@@ -20,6 +20,11 @@ import java.sql.*;
  * @return
  **/
 public class AdminUI {
+    public AdminUI(String user) {
+
+        this.user = user;
+    }
+
     JScrollPane scro;//滚动面板
     Object []columnName = new Object[]{"商品名","类别","单价","折扣","进价","库存","商品ID"};//表格的字段名
     JFrame admin = new JFrame("管理员界面");//管理员界面主界面
@@ -330,6 +335,29 @@ public class AdminUI {
         Portprice.setText("");
         Store.setText("");
         Id.setText("");
+    }
+
+    void GoodsCheck() throws Exception{
+        JFrame jFrame = new JFrame("查找商品");
+        JPanel jPanel = new JPanel();
+        jFrame.setVisible(true);
+        jFrame.setResizable(false);
+        jFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        jFrame.setBounds(100,100,400,250);
+        jFrame.setLocationRelativeTo(null);
+        jPanel.setLayout(null);
+        jFrame.setContentPane(jPanel);
+
+        JLabel jLabel = new JLabel("请输入商品名或id");
+        JButton check = new JButton("查找");
+        JTextField text = new JTextField();
+        jLabel.setBounds(130,20,200,50);
+        jLabel.setFont(new Font("宋体",0,16));
+        check.setBounds(145,150,100,30);
+        text.setBounds(100,90,200,30);
+        jPanel.add(jLabel);
+        jPanel.add(check);
+        jPanel.add(text);
     }
 
 }

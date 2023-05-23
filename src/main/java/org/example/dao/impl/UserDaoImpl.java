@@ -3,8 +3,8 @@ package org.example.dao.impl;
 import cn.hutool.core.date.DateUtil;
 import org.example.dao.UserDao;
 import org.example.domain.User;
-import org.example.util.JdbcUtil;
 import org.example.util.PstmtUtil;
+import org.example.util.showError;
 
 import java.sql.*;
 
@@ -177,7 +177,7 @@ public class UserDaoImpl implements UserDao {
         return flag;
     }
     @Override
-    public boolean changeFavourites(int userid) throws Exception {
+    public double changeFavourites(int userid) throws Exception {
         double sum = 0;
         boolean flag = false;
         boolean flag2 = false;
@@ -230,6 +230,7 @@ public class UserDaoImpl implements UserDao {
             double oldBalance = resultSet3.getDouble(2);
             double newBalance = oldBalance - sum;
             if (newBalance < 0){
+                showError.showError("出错","余额不足，请充值");
                 System.err.println("余额不足");
             }else {
                 for (int i = 0; i < row;i++){
@@ -248,7 +249,7 @@ public class UserDaoImpl implements UserDao {
             }
         }
         pstmtUtil.closeConnection();
-        return flag;
+        return sum;
     }
     @Override
     public int check(String name, String password) throws Exception {

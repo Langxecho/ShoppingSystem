@@ -17,7 +17,7 @@ public interface UserDao {
     boolean changeBalance(String username, double money) throws SQLException;//充值余额
     boolean changeBalance2(String username) throws SQLException;//开通Vip扣除余额
     boolean changeVip(String username) throws SQLException;//开通Vip
-    boolean changeFavourites(int userid) throws Exception;
+    double changeFavourites(int userid) throws Exception;
     int check(int id,String password) throws Exception;
     double checkBalance(String username) throws SQLException;//获取余额
 }
