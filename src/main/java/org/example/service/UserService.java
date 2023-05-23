@@ -17,7 +17,9 @@ public interface UserService {
     double cleanFavourites(int userid) throws Exception;//购物车内容购买
     JTable inittable();//加载用户购买界面的表格
     JTable initbuyTable(int userid);//加载购买信息界面的表格
+    JTable initFavouritesTable(int userid);//加载购物车界面的表格
     ArrayList flashReview(int goodid);//刷新评论区方法
+
 
 
 }
