@@ -399,6 +399,23 @@ public class UserDaoImpl implements UserDao {
         return goodname;
     }
 
+    @Override
+    public int getgoodid(String name) {
+        String sql = "select id from goods where name = ?";
+        PstmtUtil pst = new PstmtUtil();
+        int goodid;
+        PreparedStatement pre = pst.PstmtUtil(sql);
+        try {
+            pre.setString(1,name);
+            ResultSet rs = pre.executeQuery();
+            rs.next();
+            goodid = rs.getInt("id");
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        pst.closeConnection();
+        return goodid;
+    }
 
 
     @Override

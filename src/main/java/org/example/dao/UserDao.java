@@ -24,6 +24,7 @@ public interface UserDao {
     int getid (String user);   //根据一个已经存在的用户名，返回他的id
     String getuser(int id);//根据一个已存在的用户id，返回他的用户名
     String getgoodName(int goodid);//获得指定商品的名字
+    int getgoodid(String name);//获得指定商品名字的id
 
     ArrayList queryCheckreview();//返回数据库review表查询结果集
     ArrayList queryBuy();//返回数据库buy表结果集
