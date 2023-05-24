@@ -16,8 +16,11 @@ public interface UserService {
     boolean addFavourites(int goodid,int number,int userid)throws Exception;//添加购物车
     double cleanFavourites(int userid) throws Exception;//购物车内容购买
     JTable inittable();//加载用户购买界面的表格
+    JTable flashtable(JTable table);//刷新用户界面购买的表格
     JTable initbuyTable(int userid);//加载购买信息界面的表格
+    JTable flashbuyTable(JTable table,int userid);//刷新购买信息界面的表格
     JTable initFavouritesTable(int userid);//加载购物车界面的表格
+    JTable flashFavouritesTable(JTable table,int userid);//刷新购物车界面的表格
     ArrayList flashReview(int goodid);//刷新评论区方法
 
 

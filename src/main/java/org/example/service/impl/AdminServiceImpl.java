@@ -89,22 +89,22 @@ public class AdminServiceImpl implements AdminService {
         Object []columnName = new Object[]{"商品名","类别","单价","折扣","进价","库存","商品ID"};//表格的字段名
         for (int i = 0; i < arrayList.size(); i++) {
             Goods goods = arrayList.get(i);
-            if (goods.getId().equals(name)){
+            if (goods.getName().equals(name)){
                 target = goods;
                 break;
             }
         }
-        String[][] rowData = new String[arrayList.size()][7];
-        for (int i = 0; i < arrayList.size();i++){
-            rowData[i][0] = String.valueOf(target.getName());
-            rowData[i][1] = String.valueOf(target.getCategory());
-            rowData[i][2] = String.valueOf(target.getPrice());
-            rowData[i][3] = String.valueOf(target.getDiscount());
-            rowData[i][4] = String.valueOf(target.getPortprice());
-            rowData[i][5] = String.valueOf(target.getStore());
-            rowData[i][6] = String.valueOf(target.getId());
-        }
-        table = new JTable(rowData, columnName);
+        String[][] rowData = new String[1][7];
+            rowData[0][0] = String.valueOf(target.getName());
+            rowData[0][1] = String.valueOf(target.getCategory());
+            rowData[0][2] = String.valueOf(target.getPrice());
+            rowData[0][3] = String.valueOf(target.getDiscount());
+            rowData[0][4] = String.valueOf(target.getPortprice());
+            rowData[0][5] = String.valueOf(target.getStore());
+            rowData[0][6] = String.valueOf(target.getId());
+
+        DefaultTableModel de = new DefaultTableModel(rowData, columnName);
+        table.setModel(de);
         return table;
     }
 
@@ -122,17 +122,18 @@ public class AdminServiceImpl implements AdminService {
                 break;
             }
         }
-        String[][] rowData = new String[arrayList.size()][7];
-        for (int i = 0; i < arrayList.size();i++){
-            rowData[i][0] = String.valueOf(target.getName());
-            rowData[i][1] = String.valueOf(target.getCategory());
-            rowData[i][2] = String.valueOf(target.getPrice());
-            rowData[i][3] = String.valueOf(target.getDiscount());
-            rowData[i][4] = String.valueOf(target.getPortprice());
-            rowData[i][5] = String.valueOf(target.getStore());
-            rowData[i][6] = String.valueOf(target.getId());
-        }
-        table = new JTable(rowData, columnName);
+        String[][] rowData = new String[1][7];
+
+            rowData[0][0] = String.valueOf(target.getName());
+            rowData[0][1] = String.valueOf(target.getCategory());
+            rowData[0][2] = String.valueOf(target.getPrice());
+            rowData[0][3] = String.valueOf(target.getDiscount());
+            rowData[0][4] = String.valueOf(target.getPortprice());
+            rowData[0][5] = String.valueOf(target.getStore());
+            rowData[0][6] = String.valueOf(target.getId());
+
+        DefaultTableModel de = new DefaultTableModel(rowData, columnName);
+        table.setModel(de);
         return table;
     }
 

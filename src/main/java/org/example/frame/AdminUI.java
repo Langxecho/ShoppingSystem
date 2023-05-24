@@ -123,7 +123,9 @@ public class AdminUI {
         searchgoods.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-//                设置操作
+//                设置操作（查找商品按钮）
+                GoodsCheck();
+
 
             }
         });
@@ -337,12 +339,12 @@ public class AdminUI {
         Id.setText("");
     }
 
-    void GoodsCheck() throws Exception{
+    void GoodsCheck(){
         JFrame jFrame = new JFrame("查找商品");
         JPanel jPanel = new JPanel();
         jFrame.setVisible(true);
         jFrame.setResizable(false);
-        jFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+//        jFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         jFrame.setBounds(100,100,400,250);
         jFrame.setLocationRelativeTo(null);
         jPanel.setLayout(null);
@@ -355,6 +357,29 @@ public class AdminUI {
         jLabel.setFont(new Font("宋体",0,16));
         check.setBounds(145,150,100,30);
         text.setBounds(100,90,200,30);
+        check.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                String str = text.getText();
+                if(str.matches("[\\u4E00-\\u9FA5]+")){
+//中文
+                    table = new AdminServiceImpl().findGood(str,table);
+                    table.repaint();
+                    jFrame.dispose();
+                }else if(str.matches("\\d+")){
+                    //英文
+                    table = new AdminServiceImpl().findGood(Integer.valueOf(str),table);
+                    table.repaint();
+                    jFrame.dispose();
+                } else if (str.equals("")) {
+                    table = new AdminServiceImpl().flashForm(table);
+                    table.repaint();
+                } else {
+                    showError.showError("错误","非法输入");
+                    text.setText("");
+                }
+            }
+        });
         jPanel.add(jLabel);
         jPanel.add(check);
         jPanel.add(text);

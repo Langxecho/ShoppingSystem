@@ -176,6 +176,24 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public JTable flashtable(JTable table) {
+        String[] columnName = {"商品", "分类", "价格", "折扣", "库存"};
+        ArrayList<Goods> array = new AdminDaoImpl().checkGoods();
+        String tableValues[][] = new String[array.size()][5];
+        for (int i = 0;i < array.size();i ++){
+            Goods goods = array.get(i);
+            tableValues[i][0] = String.valueOf(goods.getName());
+            tableValues[i][1] = String.valueOf(goods.getCategory());
+            tableValues[i][2] = String.valueOf(goods.getPrice());
+            tableValues[i][3] = String.valueOf(goods.getDiscount());
+            tableValues[i][4] = String.valueOf(goods.getStore());
+        }
+        DefaultTableModel news = new DefaultTableModel(tableValues,columnName);
+        table.setModel(news);
+        return table;
+    }
+
+    @Override
     public JTable initbuyTable(int userid) {
         String[] columnName = {"商品", "购买时间", "购买数量","价格(元)"};
         ArrayList<buy> array = new UserDaoImpl().queryBuy();
@@ -201,6 +219,25 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public JTable flashbuyTable(JTable table,int userid) {
+        String[] columnName = {"商品", "购买时间", "购买数量","价格(元)"};
+        ArrayList<buy> array = new UserDaoImpl().queryBuy();
+        String tableValues[][] = new String[array.size()][4];
+        for (int i = 0;i < array.size();i++){
+            buy by = array.get(i);
+            if (by.getUserid() == userid){
+                tableValues[i][0] = new UserDaoImpl().getgoodName(by.getGoodid());
+                tableValues[i][1] = by.getTime();
+                tableValues[i][2] = String.valueOf(by.getCount());
+                tableValues[i][3] = String.valueOf(by.getPay());
+            }
+        }
+        DefaultTableModel news = new DefaultTableModel(tableValues,columnName);
+        table.setModel(news);
+        return table;
+    }
+
+    @Override
     public JTable initFavouritesTable(int userid) {
         String[] colunmName = {"商品", "购买数量","价格(元)"};
         ArrayList<Favourites> array = new UserDaoImpl().queryFavourites(userid);
@@ -221,6 +258,24 @@ public class UserServiceImpl implements UserService {
         };
         table.getTableHeader().setReorderingAllowed(false);   //不可整列移动
         table.getTableHeader().setResizingAllowed(false);   //不可拉动表格
+        return table;
+    }
+
+    @Override
+    public JTable flashFavouritesTable(JTable table,int userid) {
+        String[] colunmName = {"商品", "购买数量","价格(元)"};
+        ArrayList<Favourites> array = new UserDaoImpl().queryFavourites(userid);
+        String tableValues[][] = new String[array.size()][3];
+        for (int i = 0;i < array.size();i++){
+            Favourites fa = array.get(i);
+            if (fa.getUesrid() == userid){
+                tableValues[i][0] = new UserDaoImpl().getgoodName(fa.getGoodid());
+                tableValues[i][1] = String.valueOf(fa.getBuynumber());
+                tableValues[i][2] = String.valueOf(fa.getBuynumber() * new UserDaoImpl().getprice(fa.getGoodid()));
+            }
+        }
+        DefaultTableModel news = new DefaultTableModel(tableValues,colunmName);
+        table.setModel(news);
         return table;
     }
 

@@ -1,5 +1,7 @@
 package org.example.frame;
 
+import org.example.dao.impl.UserDaoImpl;
+import org.example.service.impl.UserServiceImpl;
 import org.example.util.getMiddlelocation;
 
 import javax.swing.*;
@@ -8,8 +10,14 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 public class UserUI extends JFrame{
-    String getuser = null;
+    String getuser = null;//这个getuser没有构造方法
+    int ids;//用户id
+    FavouritesUI favouritesUI;
+    UserinforUI userinforUI;
+    BuyinforUI buyinforUI;
+    GoodsetUI goodsetUI;
     public void showUser() {
+        ids = new UserDaoImpl().getid(getuser);
         System.out.println("用户主界面得到的用户名为" + getuser);
 //        用户界面
         JFrame user = new JFrame();
@@ -32,16 +40,16 @@ public class UserUI extends JFrame{
         root.add(panel);
         panel.setLayout(cardLayout);
 //        添加卡片
-        GoodsetUI goodsetUI = new GoodsetUI(getuser);
+        goodsetUI = new GoodsetUI(getuser);
         panel.add(goodsetUI, "goodsetUI");
 //
-        UserinforUI userinforUI = new UserinforUI(getuser);
+        userinforUI = new UserinforUI(getuser);
         panel.add(userinforUI, "userinforUI");
 
-        FavouritesUI favouritesUI = new FavouritesUI(getuser);
+        favouritesUI = new FavouritesUI(getuser);
         panel.add(favouritesUI, "favouritesUI");
 //
-        BuyinforUI buyinforUI = new BuyinforUI(getuser);
+        buyinforUI = new BuyinforUI(getuser);
         panel.add(buyinforUI, "buyinforUI");
 
 //        按钮创建
@@ -61,6 +69,8 @@ public class UserUI extends JFrame{
                 button2.setEnabled(true);
                 button3.setEnabled(true);
                 button4.setEnabled(true);
+                goodsetUI.table = new UserServiceImpl().flashtable(goodsetUI.table);
+                goodsetUI.table.repaint();
             }
         });
         button1.setBounds(30, 515, 100, 35);
@@ -90,6 +100,14 @@ public class UserUI extends JFrame{
                 button1.setEnabled(true);
                 button2.setEnabled(true);
                 button4.setEnabled(true);
+                //--------------------------------
+                favouritesUI.table = new UserServiceImpl().flashFavouritesTable(favouritesUI.table,ids);
+                favouritesUI.table.repaint();
+//                panel.remove(favouritesUI);
+//                favouritesUI = new FavouritesUI(getuser);
+//                favouritesUI.revalidate();
+//                panel.revalidate();
+//                panel.add(favouritesUI, "favouritesUI");
             }
         });
         button3.setBounds(250, 515, 100, 35);
@@ -104,6 +122,8 @@ public class UserUI extends JFrame{
                 button1.setEnabled(true);
                 button2.setEnabled(true);
                 button3.setEnabled(true);
+                buyinforUI.table = new UserServiceImpl().flashbuyTable(buyinforUI.table,ids);
+                buyinforUI.table.repaint();
             }
         });
         button4.setBounds(360, 515, 100, 35);

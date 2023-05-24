@@ -15,4 +15,7 @@ public interface AdminService {
     boolean print();//打印表单
     JTable delForm(int index,JTable table);//管理员界面删除商品方法，输入要删除的行，返回一个修改后的表格
     JTable flashForm(JTable table);//管理员界面刷新表格方法，返回刷新后的表格
+    int goodNumber();//计算商品总数量
+    int soldNumber();//计算销量
+    Double profits();//计算利润
 }
