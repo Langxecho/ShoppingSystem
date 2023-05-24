@@ -239,7 +239,8 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void delFavourites(String user, int goodid, int buynumber) {
-
+    public void delFavourites(String user, int goodid, int buynumber) throws Exception {
+        UserDaoImpl userDao = new UserDaoImpl();
+        userDao.delFavourites(user,goodid,buynumber);
     }
 }

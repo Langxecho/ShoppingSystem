@@ -159,7 +159,7 @@ public class UserDaoImpl implements UserDao {
         ResultSet resultSet3 = pre3.executeQuery();
         if (resultSet3.next()){
             int userid = resultSet3.getInt(1);
-            String sql4 = "insert into buy values ("+goodid+","+num+",'"+now+"',"+userid+","+buy[2]+");";
+            String sql4 = "insert into buy values ("+goodid+","+num+",'"+now+"',"+userid+","+buy[2]+")";
             PreparedStatement pre4 = pstmtUtil.PstmtUtil(sql4);
             pre4.executeUpdate();
         }
@@ -438,6 +438,27 @@ public class UserDaoImpl implements UserDao {
         }
         pst.closeConnection();
         return goodid;
+    }
+
+    @Override
+    public boolean delFavourites(String user, int goodid, int buynumber) throws Exception {
+        int userid = getid(user);
+        String sql1 = "delete from favourites where uesrid = "+userid+" and goodid = "+goodid+"";
+        String sql2 = "select * from goods where id = "+goodid+"";
+        PstmtUtil pstmtUtil = new PstmtUtil();
+        PreparedStatement pre1 = pstmtUtil.PstmtUtil(sql1);
+        PreparedStatement pre2 = pstmtUtil.PstmtUtil(sql2);
+        ResultSet resultSet2 = pre2.executeQuery();
+        if (resultSet2.next()){
+            int oldStore = resultSet2.getInt(6);
+            int newStore = oldStore + buynumber;
+            String sql3 = "update goods set store = "+newStore+" where id = "+goodid+"";
+            PreparedStatement pre3 = pstmtUtil.PstmtUtil(sql3);
+            pre3.executeUpdate();
+        }
+        pre1.executeUpdate();
+        pstmtUtil.closeConnection();
+        return true;
     }
 
 
