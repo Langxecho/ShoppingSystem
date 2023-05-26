@@ -19,6 +19,7 @@ import java.util.ArrayList;
 public class GoodsetUI extends JPanel {
     String user;
     JTable table;
+    int index;
     public GoodsetUI(String user) {
         setLayout(null);
         this.user = user;
@@ -47,7 +48,8 @@ public class GoodsetUI extends JPanel {
         checkItem.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                BuyUI.showBuy();
+                BuyUI buyUI = new BuyUI(user, table);
+                buyUI.showBuy();
             }
         });
 

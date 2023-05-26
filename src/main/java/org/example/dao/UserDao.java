@@ -27,6 +27,8 @@ public interface UserDao {
     String getgoodName(int goodid);//获得指定商品的名字
     int getgoodid(String name);//获得指定商品名字的id
 
+    boolean delFavourites(String user,int goodid,int buynumber) throws Exception;
+
     ArrayList queryCheckreview();//返回数据库review表查询结果集
     ArrayList queryBuy();//返回数据库buy表结果集
     ArrayList queryFavourites(int userid);//返回购物车表的结果集

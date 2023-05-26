@@ -13,9 +13,15 @@ class UserServiceImplTest {
 //        userService.changeName("cao","kao");
     }
 
-    @Test
+
     void registe() throws Exception {
         UserServiceImpl userService = new UserServiceImpl();
         userService.registe("shy", "123456", "123456");
+    }
+
+    @Test
+    void buy() {
+        UserServiceImpl userService = new UserServiceImpl();
+        userService.buy(5848, "nbshy", 5);
     }
 }

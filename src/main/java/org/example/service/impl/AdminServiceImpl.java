@@ -28,12 +28,12 @@ public class AdminServiceImpl implements AdminService {
 
     @Override//创建管理员系统主界面表格的方法
     public JTable table() {
-        Object []columnName = new Object[]{"商品名","类别","单价","折扣","进价","库存","商品ID"};//表格的字段名
+        Object[] columnName = new Object[]{"商品名", "类别", "单价", "折扣", "进价", "库存", "商品ID"};//表格的字段名
         JTable table = new JTable();
         AdminDaoImpl a = new AdminDaoImpl();
         ArrayList<Goods> array = a.checkGoods();
         String[][] rowData = new String[array.size()][7];
-        for (int i = 0; i < array.size();i++){
+        for (int i = 0; i < array.size(); i++) {
             Goods goo = array.get(i);
             rowData[i][0] = String.valueOf(goo.getName());
             rowData[i][1] = String.valueOf(goo.getCategory());
@@ -43,7 +43,7 @@ public class AdminServiceImpl implements AdminService {
             rowData[i][5] = String.valueOf(goo.getStore());
             rowData[i][6] = String.valueOf(goo.getId());
         }
-        table = new JTable(rowData,columnName) {
+        table = new JTable(rowData, columnName) {
             public boolean isCellEditable(int row, int column) {
                 return false;
             }
@@ -90,22 +90,22 @@ public class AdminServiceImpl implements AdminService {
         Goods target = null;
         AdminDaoImpl imp = new AdminDaoImpl();
         ArrayList<Goods> arrayList = imp.checkGoods();
-        Object []columnName = new Object[]{"商品名","类别","单价","折扣","进价","库存","商品ID"};//表格的字段名
+        Object[] columnName = new Object[]{"商品名", "类别", "单价", "折扣", "进价", "库存", "商品ID"};//表格的字段名
         for (int i = 0; i < arrayList.size(); i++) {
             Goods goods = arrayList.get(i);
-            if (goods.getName().equals(name)){
+            if (goods.getName().equals(name)) {
                 target = goods;
                 break;
             }
         }
         String[][] rowData = new String[1][7];
-            rowData[0][0] = String.valueOf(target.getName());
-            rowData[0][1] = String.valueOf(target.getCategory());
-            rowData[0][2] = String.valueOf(target.getPrice());
-            rowData[0][3] = String.valueOf(target.getDiscount());
-            rowData[0][4] = String.valueOf(target.getPortprice());
-            rowData[0][5] = String.valueOf(target.getStore());
-            rowData[0][6] = String.valueOf(target.getId());
+        rowData[0][0] = String.valueOf(target.getName());
+        rowData[0][1] = String.valueOf(target.getCategory());
+        rowData[0][2] = String.valueOf(target.getPrice());
+        rowData[0][3] = String.valueOf(target.getDiscount());
+        rowData[0][4] = String.valueOf(target.getPortprice());
+        rowData[0][5] = String.valueOf(target.getStore());
+        rowData[0][6] = String.valueOf(target.getId());
 
         DefaultTableModel de = new DefaultTableModel(rowData, columnName);
         table.setModel(de);
@@ -118,23 +118,23 @@ public class AdminServiceImpl implements AdminService {
         Goods target = null;
         AdminDaoImpl imp = new AdminDaoImpl();
         ArrayList<Goods> arrayList = imp.checkGoods();
-        Object []columnName = new Object[]{"商品名","类别","单价","折扣","进价","库存","商品ID"};//表格的字段名
+        Object[] columnName = new Object[]{"商品名", "类别", "单价", "折扣", "进价", "库存", "商品ID"};//表格的字段名
         for (int i = 0; i < arrayList.size(); i++) {
             Goods goods = arrayList.get(i);
-            if (goods.getId() == id){
+            if (goods.getId() == id) {
                 target = goods;
                 break;
             }
         }
         String[][] rowData = new String[1][7];
 
-            rowData[0][0] = String.valueOf(target.getName());
-            rowData[0][1] = String.valueOf(target.getCategory());
-            rowData[0][2] = String.valueOf(target.getPrice());
-            rowData[0][3] = String.valueOf(target.getDiscount());
-            rowData[0][4] = String.valueOf(target.getPortprice());
-            rowData[0][5] = String.valueOf(target.getStore());
-            rowData[0][6] = String.valueOf(target.getId());
+        rowData[0][0] = String.valueOf(target.getName());
+        rowData[0][1] = String.valueOf(target.getCategory());
+        rowData[0][2] = String.valueOf(target.getPrice());
+        rowData[0][3] = String.valueOf(target.getDiscount());
+        rowData[0][4] = String.valueOf(target.getPortprice());
+        rowData[0][5] = String.valueOf(target.getStore());
+        rowData[0][6] = String.valueOf(target.getId());
 
         DefaultTableModel de = new DefaultTableModel(rowData, columnName);
         table.setModel(de);
@@ -150,37 +150,37 @@ public class AdminServiceImpl implements AdminService {
     }
 
     @Override
-    public boolean backup(String username,String pwd,String url,String path,String tableName) throws Exception {
+    public boolean backup(String username, String pwd, String url, String path, String tableName) throws Exception {
         //mysqldump -h 127.0.0.1 -uroot -proot mysql user >D:/info/server/var/backupdata/backups.sql
         String dbName = "mysql";
-        dbName += " "+tableName;
-        String pathSql = path+tableName+".sql";
+        dbName += " " + tableName;
+        String pathSql = path + tableName + ".sql";
         File fileSql = new File(pathSql);
         File filePath = new File(path);
         //创建备份sql文件
-        if (!filePath.exists()){
+        if (!filePath.exists()) {
             filePath.mkdirs();
         }
-        if (!fileSql.exists()){
+        if (!fileSql.exists()) {
             fileSql.createNewFile();
         }
         //mysqldump -hlocalhost -uroot -p123456 db > /home/back.sql
         StringBuffer sb = new StringBuffer();
         sb.append("mysqldump");
-        sb.append(" -h"+url);
-        sb.append(" -u"+username);
-        sb.append(" -p"+pwd);
-        sb.append(" "+dbName+" >" + " --default-character-set=utf8");
+        sb.append(" -h" + url);
+        sb.append(" -u" + username);
+        sb.append(" -p" + pwd);
+        sb.append(" " + dbName + " >" + " --default-character-set=utf8");
         sb.append(pathSql);
-        System.out.println("cmd命令为："+sb.toString());
-        System.out.println("开始备份："+dbName);
+        System.out.println("cmd命令为：" + sb.toString());
+        System.out.println("开始备份：" + dbName);
         Process process = null;
         //判断操作系统 windwos与linux使用的语句不一样
-        if(System.getProperty("os.name").toLowerCase().indexOf("windows") > -1){
-            process = Runtime.getRuntime().exec("cmd /c"+sb.toString());
-        }else if(System.getProperty("os.name").toLowerCase().indexOf("linux") > -1){
-            process = Runtime.getRuntime().exec("/bin/sh -c"+sb.toString());
-        }else{
+        if (System.getProperty("os.name").toLowerCase().indexOf("windows") > -1) {
+            process = Runtime.getRuntime().exec("cmd /c" + sb.toString());
+        } else if (System.getProperty("os.name").toLowerCase().indexOf("linux") > -1) {
+            process = Runtime.getRuntime().exec("/bin/sh -c" + sb.toString());
+        } else {
             throw new Exception("暂不支持该操作系统，进行数据库备份或还原！");
         }
         //设置超时一分钟
@@ -189,11 +189,11 @@ public class AdminServiceImpl implements AdminService {
         StringBuffer mes = new StringBuffer();
         String tmp = "";
         BufferedReader error = new BufferedReader(new InputStreamReader(process.getErrorStream()));
-        while((tmp = error.readLine()) != null){
+        while ((tmp = error.readLine()) != null) {
             mes.append(tmp + "\n");
         }
-        if(mes != null || !"".equals(mes) ){
-            System.out.println("备份成功!==>"+mes.toString());
+        if (mes != null || !"".equals(mes)) {
+            System.out.println("备份成功!==>" + mes.toString());
         }
         error.close();
         return true;
@@ -201,39 +201,39 @@ public class AdminServiceImpl implements AdminService {
 
     @Override
     public boolean restore() {
-return true;
+        return true;
     }
 
     @Override
-    public boolean print(int all,int soldnumber,double profits) {
+    public boolean print(int all, int soldnumber, double profits) {
 
-                ArrayList<buy> myList = new UserDaoImpl().queryBuy();  // 假设 myList 是存储对象的 ArrayList
+        ArrayList<buy> myList = new UserDaoImpl().queryBuy();  // 假设 myList 是存储对象的 ArrayList
 
-                // 假设 myList 已经包含了一些对象
+        // 假设 myList 已经包含了一些对象
 
-                StringBuilder sb = new StringBuilder();
+        StringBuilder sb = new StringBuilder();
 
-                // 遍历 ArrayList，将每个对象的 toString 结果追加到 StringBuilder
-                for (buy obj : myList) {
-                    sb.append(obj.toString()).append("\n");
-                }
-                sb.append("利润:" + profits + "元" + "销量:" + soldnumber + "商品总数量:" + all);
-                // 指定要输出的文件路径
-                String filePath = "E:\\output.txt";
+        // 遍历 ArrayList，将每个对象的 toString 结果追加到 StringBuilder
+        for (buy obj : myList) {
+            sb.append(obj.toString()).append("\n");
+        }
+        sb.append("利润:" + profits + "元" + "销量:" + soldnumber + "商品总数量:" + all);
+        // 指定要输出的文件路径
+        String filePath = "E:\\output.txt";
 
-                // 将 StringBuilder 对象中的内容写入文件
-                try (BufferedWriter writer = new BufferedWriter(new FileWriter(filePath))) {
-                    writer.write(sb.toString());
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
+        // 将 StringBuilder 对象中的内容写入文件
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(filePath))) {
+            writer.write(sb.toString());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
-            return true;
+        return true;
 
     }
 
     @Override
-    public JTable delForm(int index,JTable table) {
+    public JTable delForm(int index, JTable table) {
         AdminDaoImpl imp = new AdminDaoImpl();
         ArrayList<Goods> arrayList = imp.checkGoods();
         Goods go = arrayList.get(index);
@@ -246,10 +246,10 @@ return true;
             throw new RuntimeException(e);
         }
 
-        Object []columnName = new Object[]{"商品名","类别","单价","折扣","进价","库存","商品ID"};//表格的字段名
+        Object[] columnName = new Object[]{"商品名", "类别", "单价", "折扣", "进价", "库存", "商品ID"};//表格的字段名
         arrayList.remove(index);
         String[][] rowData = new String[arrayList.size()][7];
-        for (int i = 0; i < arrayList.size();i++){
+        for (int i = 0; i < arrayList.size(); i++) {
             Goods goo = arrayList.get(i);
             rowData[i][0] = String.valueOf(goo.getName());
             rowData[i][1] = String.valueOf(goo.getCategory());
@@ -259,7 +259,7 @@ return true;
             rowData[i][5] = String.valueOf(goo.getStore());
             rowData[i][6] = String.valueOf(goo.getId());
         }
-        DefaultTableModel news = new DefaultTableModel(rowData,columnName);
+        DefaultTableModel news = new DefaultTableModel(rowData, columnName);
         table.setModel(news);
         return table;
     }
@@ -268,9 +268,9 @@ return true;
     public JTable flashForm(JTable table) {
         AdminDaoImpl imp = new AdminDaoImpl();
         ArrayList<Goods> arrayList = imp.checkGoods();
-        Object []columnName = new Object[]{"商品名","类别","单价","折扣","进价","库存","商品ID"};//表格的字段名
+        Object[] columnName = new Object[]{"商品名", "类别", "单价", "折扣", "进价", "库存", "商品ID"};//表格的字段名
         String[][] rowData = new String[arrayList.size()][7];
-        for (int i = 0; i < arrayList.size();i++){
+        for (int i = 0; i < arrayList.size(); i++) {
             Goods goo = arrayList.get(i);
             rowData[i][0] = String.valueOf(goo.getName());
             rowData[i][1] = String.valueOf(goo.getCategory());
@@ -280,7 +280,7 @@ return true;
             rowData[i][5] = String.valueOf(goo.getStore());
             rowData[i][6] = String.valueOf(goo.getId());
         }
-        DefaultTableModel news = new DefaultTableModel(rowData,columnName);
+        DefaultTableModel news = new DefaultTableModel(rowData, columnName);
         table.setModel(news);
         return table;
     }
@@ -289,7 +289,7 @@ return true;
     public int goodNumber() {
         ArrayList<Goods> arrayList = new AdminDaoImpl().checkGoods();
         int Allnumber = 0;
-        for (int i = 0;i < arrayList.size();i++){
+        for (int i = 0; i < arrayList.size(); i++) {
             Goods goo = arrayList.get(i);
             Allnumber += goo.getStore();
         }
@@ -300,7 +300,7 @@ return true;
     public int soldNumber() {
         ArrayList<buy> arrayList = new UserDaoImpl().queryBuy();
         int ALLcount = 0;
-        for (int i = 0;i < arrayList.size();i++){
+        for (int i = 0; i < arrayList.size(); i++) {
             buy by = arrayList.get(i);
             ALLcount += by.getCount();
         }
@@ -313,18 +313,124 @@ return true;
         ArrayList<buy> buyList = new UserDaoImpl().queryBuy();
         ArrayList<Goods> goodsList = new AdminDaoImpl().checkGoods();
         Double ALLprofits = 0.0;
-        for (int i = 0;i < buyList.size();i++){
+        for (int i = 0; i < buyList.size(); i++) {
             buy by = buyList.get(i);
-        int CUcount = by.getCount();//当前buy表记录该购买记录的购买数量
-        int CUgoodid = by.getGoodid();//当前当前buy表记录该购买记录的购买商品id
-            for (int j = 0;j < goodsList.size();j++){
+            int CUcount = by.getCount();//当前buy表记录该购买记录的购买数量
+            int CUgoodid = by.getGoodid();//当前当前buy表记录该购买记录的购买商品id
+            for (int j = 0; j < goodsList.size(); j++) {
                 Goods goo = goodsList.get(j);
 
-                if (CUgoodid == goo.getId()){
-                    ALLprofits += CUcount * ( goo.getPrice() - goo.getPortprice() );
+                if (CUgoodid == goo.getId()) {
+                    ALLprofits += CUcount * (goo.getPrice() - goo.getPortprice());
                 }
             }
         }
         return ALLprofits;
+    }
+
+    @Override
+    public JTable initbuyTable() {
+        String[] columnName = {"用户", "商品", "购买时间", "购买数量", "价格(元)"};
+        ArrayList<buy> array = new UserDaoImpl().queryBuy();
+        String tableValues[][] = new String[array.size()][5];
+        System.out.println(array.size());
+        for (int i = 0; i < array.size(); i++) {
+            buy by = array.get(i);
+//            if (by.getGoodid() == null){break;}
+            tableValues[i][0] = new UserDaoImpl().getuser(by.getUserid());
+            tableValues[i][1] = String.valueOf(by.getGoodid());
+            tableValues[i][2] = by.getTime();
+            tableValues[i][3] = String.valueOf(by.getCount());
+            tableValues[i][4] = String.valueOf(by.getPay());
+        }
+        JTable table = new JTable(tableValues, columnName) {
+            public boolean isCellEditable(int row, int column) {
+                return false;
+            }
+        };
+        table.getTableHeader().setReorderingAllowed(false);   //不可整列移动
+        table.getTableHeader().setResizingAllowed(false);   //不可拉动表格
+        return table;
+    }
+
+    @Override
+    public JTable flashbuyTable(int goodid,JTable table) {
+        String[] columnName = {"用户", "商品", "购买时间", "购买数量", "价格(元)"};
+        ArrayList<buy> array = new UserDaoImpl().queryBuy();
+        int j = 0;
+        for (int k = 0;k < array.size();k ++){
+            buy by = array.get(k);
+            if (goodid == by.getGoodid()){
+                j++;
+            }
+        }
+        String tableValues[][] = new String[j][5];
+        int ii = 0;
+        System.out.println(array.size());
+        for (int i = 0; i < array.size(); i++) {
+            buy by = array.get(i);
+            if (goodid == by.getGoodid()){
+                tableValues[ii][0] = new UserDaoImpl().getuser(by.getUserid());
+                tableValues[ii][1] = String.valueOf(by.getGoodid());
+                tableValues[ii][2] = by.getTime();
+                tableValues[ii][3] = String.valueOf(by.getCount());
+                tableValues[ii][4] = String.valueOf(by.getPay());
+                ii ++;
+            }
+
+        }
+        DefaultTableModel de = new DefaultTableModel(tableValues, columnName);
+        table.setModel(de);
+        return table;
+    }
+
+    @Override
+    public JTable flashbuyTable(String user, JTable table) {
+        String[] columnName = {"用户", "商品", "购买时间", "购买数量", "价格(元)"};
+        int id = new UserDaoImpl().getid(user);
+        ArrayList<buy> array = new UserDaoImpl().queryBuy();
+        int j = 0;
+        for (int k = 0;k < array.size();k ++){
+            buy by = array.get(k);
+            if (id == by.getUserid()){
+                j++;
+            }
+        }
+        String tableValues[][] = new String[j][5];
+        System.out.println(array.size());
+        int ii = 0;
+        for (int i = 0; i < array.size(); i++) {
+            buy by = array.get(i);
+            if (id == by.getUserid()){
+                tableValues[ii][0] = new UserDaoImpl().getuser(by.getUserid());
+                tableValues[ii][1] = String.valueOf(by.getGoodid());
+                tableValues[ii][2] = by.getTime();
+                tableValues[ii][3] = String.valueOf(by.getCount());
+                tableValues[ii][4] = String.valueOf(by.getPay());
+                ii ++;
+            }
+        }
+        DefaultTableModel de = new DefaultTableModel(tableValues, columnName);
+        table.setModel(de);
+        return table;
+    }
+
+    @Override
+    public JTable flashBUY(JTable table) {
+        String[] columnName = {"用户", "商品", "购买时间", "购买数量", "价格(元)"};
+        ArrayList<buy> array = new UserDaoImpl().queryBuy();
+        String tableValues[][] = new String[array.size()][5];
+        System.out.println(array.size());
+        for (int i = 0; i < array.size(); i++) {
+            buy by = array.get(i);
+//            if (by.getGoodid() == null){break;}
+            tableValues[i][0] = new UserDaoImpl().getuser(by.getUserid());
+            tableValues[i][1] = String.valueOf(by.getGoodid());
+            tableValues[i][2] = by.getTime();
+            tableValues[i][3] = String.valueOf(by.getCount());
+            tableValues[i][4] = String.valueOf(by.getPay());
+        }DefaultTableModel de = new DefaultTableModel(tableValues, columnName);
+        table.setModel(de);
+        return table;
     }
 }

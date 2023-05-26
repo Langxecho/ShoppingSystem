@@ -222,14 +222,25 @@ public class UserServiceImpl implements UserService {
     public JTable flashbuyTable(JTable table,int userid) {
         String[] columnName = {"商品", "购买时间", "购买数量","价格(元)"};
         ArrayList<buy> array = new UserDaoImpl().queryBuy();
-        String tableValues[][] = new String[array.size()][4];
+//        System.out.println(" here array size:" + array.size());
+        int k = 0;
         for (int i = 0;i < array.size();i++){
             buy by = array.get(i);
             if (by.getUserid() == userid){
-                tableValues[i][0] = new UserDaoImpl().getgoodName(by.getGoodid());
-                tableValues[i][1] = by.getTime();
-                tableValues[i][2] = String.valueOf(by.getCount());
-                tableValues[i][3] = String.valueOf(by.getPay());
+                k++;
+            }
+        }
+        String tableValues[][] = new String[k][4];
+             int j = 0;//有效行计数
+        for (int i = 0;i < array.size();i++){
+            buy by = array.get(i);
+            if (by.getUserid() == userid){
+
+                tableValues[j][0] = new UserDaoImpl().getgoodName(by.getGoodid());
+                tableValues[j][1] = by.getTime();
+                tableValues[j][2] = String.valueOf(by.getCount());
+                tableValues[j][3] = String.valueOf(by.getPay());
+                j ++;
             }
         }
         DefaultTableModel news = new DefaultTableModel(tableValues,columnName);
@@ -291,5 +302,11 @@ public class UserServiceImpl implements UserService {
            }
         }
        return arrayList;
+    }
+
+    @Override
+    public void delFavourites(String user, int goodid, int buynumber) throws Exception {
+        UserDaoImpl userDao = new UserDaoImpl();
+        userDao.delFavourites(user,goodid,buynumber);
     }
 }

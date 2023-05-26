@@ -55,6 +55,7 @@ public class RegisterUI extends JFrame{
           if(Psd.getText().equals(Psd2.getText())){
               try {
                   new UserServiceImpl().registe(Act.getText(),Psd.getText(),Psd2.getText());
+                  showError showError = new showError();
                   showError.showError("success","恭喜您,注册成功");
                   register.dispose();
                   LoginUI ss = new LoginUI();
@@ -64,7 +65,9 @@ public class RegisterUI extends JFrame{
               }
 
           }
-          else {showError.showError("出错","两次密码不一致");}
+          else {
+              showError showError = new showError();
+              showError.showError("出错","两次密码不一致");}
         });
         root.add(button);
 

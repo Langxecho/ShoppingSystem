@@ -19,4 +19,9 @@ public interface AdminService {
     int goodNumber();//计算商品总数量
     int soldNumber();//计算销量
     Double profits();//计算利润
+    JTable initbuyTable();//加载购买信息界面的表格
+    JTable flashbuyTable(int goodid,JTable table);
+    JTable flashbuyTable(String user,JTable table);
+    JTable flashBUY(JTable table);
+
 }

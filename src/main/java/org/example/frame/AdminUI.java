@@ -1,6 +1,7 @@
 package org.example.frame;
 
 import org.example.service.impl.AdminServiceImpl;
+import org.example.service.impl.UserServiceImpl;
 import org.example.util.PstmtUtil;
 import org.example.util.getMiddlelocation;
 import org.example.util.showError;
@@ -33,12 +34,13 @@ public class AdminUI {
     String empty1 = "                                                                                                                                                                                                                                                                                                                                                                             ";
     JLabel emptysmall = new JLabel(empty);//小占位符
     JLabel lable = new JLabel(empty1);//占位符,占用一整行
+    JTable table1;
     JButton addgoods = new JButton("添加商品");//增加商品按钮
     JButton delgoods = new JButton("删除商品");//删除商品按钮
     JButton searchgoods = new JButton("查找商品");//查找商品按钮
     JButton exit = new JButton("退出");//退出系统按钮
     JButton managergood = new JButton("数据分析");//数据分析按钮
-    JButton backup = new JButton("备份与恢复");//数据备份与回复按钮
+    JButton backup = new JButton("购买信息管理");//数据备份与回复按钮
     JTable table;
     int index;
     JFrame generateadmin(){
@@ -152,7 +154,8 @@ public class AdminUI {
         backup.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                //设置操作
+                //设置用户信息管理
+                showBuyinfo();
 
             }
         });
@@ -302,6 +305,7 @@ public class AdminUI {
                 //这里还需要一个增加商品后的刷新
                 table = new AdminServiceImpl().flashForm(table);
                 frame.dispose();
+                showError showError = new showError();
                 showError.showError("添加商品", "添加成功");
             } catch (Exception ex) {
                 throw new RuntimeException(ex);
@@ -376,7 +380,54 @@ public class AdminUI {
                     table = new AdminServiceImpl().flashForm(table);
                     table.repaint();
                 } else {
-                    showError.showError("错误","非法输入");
+                    showError a = new showError();
+                    a.showError("错误","非法输入");
+                    text.setText("");
+                }
+            }
+        });
+        jPanel.add(jLabel);
+        jPanel.add(check);
+        jPanel.add(text);
+    }
+    void BUYCheck(){
+        JFrame jFrame = new JFrame("查找商品");
+        JPanel jPanel = new JPanel();
+        jFrame.setVisible(true);
+        jFrame.setResizable(false);
+//        jFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        jFrame.setBounds(100,100,400,250);
+        jFrame.setLocationRelativeTo(null);
+        jPanel.setLayout(null);
+        jFrame.setContentPane(jPanel);
+
+        JLabel jLabel = new JLabel("请输入用户名");
+        JButton check = new JButton("查找");
+        JTextField text = new JTextField();
+        jLabel.setBounds(130,20,200,50);
+        jLabel.setFont(new Font("宋体",0,16));
+        check.setBounds(145,150,100,30);
+        text.setBounds(100,90,200,30);
+        check.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                String str = text.getText();
+                if(str.matches("^[a-zA-Z]+$")){
+//中文
+                    table1 = new AdminServiceImpl().flashbuyTable(str,table1);
+                    table1.repaint();
+                    jFrame.dispose();
+//                }else if(str.matches("\\d+")){
+//                    //英文
+//                    table1 = new AdminServiceImpl().flashbuyTable(Integer.valueOf(str),table1);
+//                    table1.repaint();
+//                    jFrame.dispose();
+                } else if (str.equals("")) {
+                    table1 = new AdminServiceImpl().flashBUY(table1);
+                    table1.repaint();
+                } else {
+                    showError a = new showError();
+                    a.showError("错误","非法输入");
                     text.setText("");
                 }
             }
@@ -386,4 +437,25 @@ public class AdminUI {
         jPanel.add(text);
     }
 
+    void showBuyinfo(){
+        JFrame buyinfo = new JFrame("用户购买记录显示");
+        buyinfo.setSize(800,400);
+        int a[] = getMiddlelocation.getMiddlelocate(buyinfo);
+        buyinfo.setLocation(a[0],a[1]);
+        buyinfo.setLayout(new FlowLayout());
+        table1 = new AdminServiceImpl().initbuyTable();
+        scro = new JScrollPane(table1);
+        scro.setPreferredSize(new Dimension(770,440));
+        JButton searchUser = new JButton("记录查询");
+        searchUser.setSize(60,20);
+        searchUser.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+            BUYCheck();
+            }
+        });
+        buyinfo.add(searchUser);
+        buyinfo.add(scro);
+        buyinfo.setVisible(true);
+    }
 }
