@@ -138,12 +138,13 @@ public class AdminUI {
                 System.exit(0);
             }
         });
-        //管理系统按钮
+        //数据分析按钮
         managergood.setSize(60,20);
         managergood.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 //设置操作
+                new AnalyseUI().startUI();
             }
         });
         //备份与恢复按钮
