@@ -139,6 +139,7 @@ public class UserinforUI extends JPanel {
                 }
 
                 if (flag){
+                    showError showError = new showError();
                         showError.showError("恭喜","您已经成为高贵的vip用户了");
                         getvip.dispose();
                     //再次判断
@@ -148,6 +149,7 @@ public class UserinforUI extends JPanel {
                     getvip.dispose();
                     }
                     else if(!flag){
+                        showError showError = new showError();
                         showError.showError("出错","您的余额不足,请充值!");
                         getvip.dispose();
                     }
@@ -186,6 +188,7 @@ public class UserinforUI extends JPanel {
                     ex.printStackTrace();
                 }
                 System.out.println("修改成功");
+                    showError showError = new showError();
                     showError.showError("祝贺","用户名修改成功!");
                     exchange.dispose();
                     user = newname;
@@ -221,7 +224,7 @@ public class UserinforUI extends JPanel {
                     ex.printStackTrace();
                 }
 
-
+                showError showError = new showError();
                 showError.showError("恭喜","充值成功");
                     addbalance.dispose();
                     balance += add;

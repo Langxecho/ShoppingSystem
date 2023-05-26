@@ -22,6 +22,8 @@ public interface UserService {
     JTable initFavouritesTable(int userid);//加载购物车界面的表格
     JTable flashFavouritesTable(JTable table,int userid);//刷新购物车界面的表格
     ArrayList flashReview(int goodid);//刷新评论区方法
+    void delFavourites(String user,int goodid,int buynumber) throws Exception;//三个形参分别是用户名,商品id和用户购买当前商品的数量,根据这三个信息找到购买表中唯一的一条数据,将其删除
+
 
 
 

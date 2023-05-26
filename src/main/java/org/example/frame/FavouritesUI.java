@@ -71,7 +71,8 @@ public class FavouritesUI extends JPanel {
 //                    SwingUtilities.updateComponentTreeUI(scrollPane);
                     table = new UserServiceImpl().flashFavouritesTable(table,ids);
                     table.repaint();
-                    showError.showError("恭喜","购买成功，计算折扣后余额扣除" + spendmoney);
+                    showError a = new showError();
+                    a.showError("恭喜","购买成功，计算折扣后余额扣除" + spendmoney);
                 } catch (Exception ex) {
                     throw new RuntimeException(ex);
                 }

@@ -56,13 +56,14 @@ public class LoginUI extends JFrame {
                 flag = new UserServiceImpl().login(uername,passworld);
                 getname = Act.getText();
             } catch (Exception ex) {
+                showError showError = new showError();
                 showError.showError("警告","用户名密码判断系统出错");
                 ex.printStackTrace();
             }
             AdminUI ss = new AdminUI(getname);
             System.out.println("登录界面得到的用户名为" + getname);
             switch (flag){
-                case 9:   showError.showError("错误","用户名或密码错误"); break;
+                case 9: showError aaa= new showError();  aaa.showError("错误","用户名或密码错误"); break;
                 case 1: //普通用户登录？
                 case 2: UserUI a = new UserUI();a.setGetuser(getname);a.showUser();break;//vip用户登录？
                 case 0: ss.generateadmin(); login.dispose();

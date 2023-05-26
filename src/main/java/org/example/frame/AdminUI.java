@@ -302,6 +302,7 @@ public class AdminUI {
                 //这里还需要一个增加商品后的刷新
                 table = new AdminServiceImpl().flashForm(table);
                 frame.dispose();
+                showError showError = new showError();
                 showError.showError("添加商品", "添加成功");
             } catch (Exception ex) {
                 throw new RuntimeException(ex);
@@ -376,7 +377,8 @@ public class AdminUI {
                     table = new AdminServiceImpl().flashForm(table);
                     table.repaint();
                 } else {
-                    showError.showError("错误","非法输入");
+                    showError a = new showError();
+                    a.showError("错误","非法输入");
                     text.setText("");
                 }
             }
